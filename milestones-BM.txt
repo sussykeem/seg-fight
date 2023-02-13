@@ -1,0 +1,12 @@
+The current idea for the final project is a game created using unity. No full idea has been made yet
+about what the game will be. 
+
+
+Rubric:
+    +20 Time Spent Working
+    +5 Creativity
+    +5 Uses a data structure from 302
+    +10 The game is playable
+
+    
+
