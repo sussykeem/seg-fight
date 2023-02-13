@@ -1,0 +1,9 @@
+The idea for a project is a game, most likely made in Unity
+    Some ideas we have floated around are a fighting game, an rpg, or an idle game
+
+Rubric:
+    +20 points - time spent working
+    +5 points - creativity
+    +10 points - the project actualy works
+    +5 points - uses a data structure
+
