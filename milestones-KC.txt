@@ -1,3 +1,5 @@
+https://github.com/sussykeem/final-project
+
 The idea for a project is a game, most likely made in Unity
     Some ideas we have floated around are a fighting game, an rpg, or an idle game
 
@@ -11,7 +13,7 @@ time log
     2 hours dicussing ideas/making the milestones/rubric - lab
     2 hours discussing ideas with the full group 2/18
     2 hours spent watching tutorials for unity and player movement 2/18
-    1 hour spent implement a simple update function that handles 2d movement
+    30 minutes spent implementing a simple update function that handles 2d movement
 
 Because I have previous experience with unity and game dev, I just needed a refresher on how to do some stuff but implementation
 went pretty smoothly. The animator gave me some trouble with the bool values.
@@ -19,4 +21,4 @@ went pretty smoothly. The animator gave me some trouble with the bool values.
 The next steps we need to take are coming up with a style, idea for the game, what the main loop will look like, and designating
 different sections of the project to people.
 
-My file is titled PlayerMove.cs
+My file is titled playerMove.cs
