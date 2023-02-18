@@ -22,10 +22,10 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update() {
         // Input
-        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.x = Input.GetAxisRaw("Horizontal"); // gets the x and y input
         movement.y = Input.GetAxisRaw("Vertical");
 
-        if (movement.x != 0) {
+        if (movement.x != 0) { // get bool data about which dir we are moving
             movingHor = true;
         } else {
             movingHor = false;
@@ -37,14 +37,14 @@ public class PlayerMovement : MonoBehaviour
             movingVert = false;
         }
 
-        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Horizontal", movement.x); // update the animator bools to choose which one to play
         animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
         animator.SetBool("movingHor", movingHor);
         animator.SetBool("movingVert", movingVert);
     }
     void FixedUpdate() {
-        // Movement
-        rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime); // fixed update makes movement
+        // not reliant on framerate, making it more consistent
     }
 }
