@@ -7,3 +7,8 @@ Rubric:
     +10 points - the project actualy works
     +5 points - uses a data structure
 
+time log
+    2 hours dicussing ideas/making the milestones/rubric - lab
+    2 hours discussing ideas with the full group 2/18
+    2 hours spent watching tutorials for unity and player movement 2/18
+    1 hour spent implement a simple update function that handles 2d movement
