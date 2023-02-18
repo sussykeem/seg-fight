@@ -18,3 +18,5 @@ went pretty smoothly. The animator gave me some trouble with the bool values.
 
 The next steps we need to take are coming up with a style, idea for the game, what the main loop will look like, and designating
 different sections of the project to people.
+
+My file is titled PlayerMove.cs
