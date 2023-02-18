@@ -1,6 +1,14 @@
+Blake Milstead
+COSC 302
+Professor Emrich
+2-18-2023
+
+Challenge 4
+
+Repository Link: https://github.com/sussykeem/final-project
+
 The current idea for the final project is a game created using unity. No full idea has been made yet
 about what the game will be. 
-
 
 Rubric:
     +20 Time Spent Working
@@ -8,5 +16,14 @@ Rubric:
     +5 Uses a data structure from 302
     +10 The game is playable
 
-Repository Link: https://github.com/sussykeem/final-project
+Time Spent:
+    2 Hours in Lab Discussing
+    2 Hours Discussing ideas on 2-18-2023
+    2 Hours watching tutorials
+    1 Hour implementing spawn manager script
+
+
+I have prior experience using Unity to create games, so I just needed to get a refersher 
+through tutorials on some of the processes. I struggled with learning how to properly 
+implement the instantiante function of Unity, once I remembered it wasn't too bad.
 
