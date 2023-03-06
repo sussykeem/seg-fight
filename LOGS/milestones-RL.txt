@@ -1,0 +1,27 @@
+
+Randy Lin
+COSC 302
+Professor Scott Emrich
+3-05-2023
+    
+Challenge 4
+
+Repository Link: https://github.com/sussykeem/final-project
+
+The idea for the game is a fighting game esque (mortal kombat style) 8-bit game.
+
+Rubric:
+    +20 Time Spent Working
+    +5 Creativity
+    +5 Uses a data structure from 302
+    +10 The game is playable
+
+Time Spent:
+    2 Hours in Lab Discussing
+    2 Hours Discussing ideas on 2-18-2023
+    2 Hours watching tutorials
+    1 Hour implementing menu 
+
+
+I have no experience with unity, but I have some experience with creating games through a different platform. It was a different language though
+and after a few tutorials with Unity. I'll get used to it. It was pretty simple to create the menu BUT making it look good will be hard.
