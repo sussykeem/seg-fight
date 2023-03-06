@@ -25,3 +25,6 @@ Time Spent:
 
 I have no experience with unity, but I have some experience with creating games through a different platform. It was a different language though
 and after a few tutorials with Unity. I'll get used to it. It was pretty simple to create the menu BUT making it look good will be hard.
+My next step is to make the menu look better, create options to turn down sound / sound effects. Add a soundtrack etc.
+
+File called randybuttons.cs
