@@ -1,0 +1,24 @@
+https://github.com/sussykeem/final-project
+
+Our idea is a unity-based 2D fighting game
+
+Rubric:
+	+10 points - time spent working on project
+	+10 points - project originality
+	+15 points - the project functions as intended
+	+5  points - project uses 302 data structure
+
+Time Log:
+	2 hours dicussing ideas/making the milestones/rubric - lab
+    	2 hours discussing ideas with the full group 2/18
+	2 hours spent setting up unity and watching various tutorials on the basics
+	1 hour messing around with various unity objects and seeing how they work
+	1 hour spent making a health bar and player health manager
+
+I am completely new to unity so getting everything set up and figuring out what to do was a challenge.
+Luckily there are various quickstart guides on the internet that made it a bit easier.
+The health bar was easy enough, just had to dabble in scripting to figure it out.
+
+Our project needs a solid backbone we can build off of before we start adding anything fancy and unnessesary.
+
+My file is playerHealth.cs
