@@ -40,7 +40,7 @@
                     "path": "<Gamepad>/dpad/up",
                     "interactions": "",
                     "processors": "",
-                    "groups": "XboxController",
+                    "groups": "Gamepad",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -51,7 +51,7 @@
                     "path": "<Gamepad>/leftStick/up",
                     "interactions": "",
                     "processors": "",
-                    "groups": "XboxController",
+                    "groups": "Gamepad",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -59,10 +59,10 @@
                 {
                     "name": "",
                     "id": "350d0aa7-99fc-4917-bde2-10b8fd38b35b",
-                    "path": "<XInputController>/leftStick",
+                    "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -70,10 +70,10 @@
                 {
                     "name": "",
                     "id": "20647839-5922-454f-abed-8082a0456aa6",
-                    "path": "<XInputController>/dpad/down",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Duck",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -81,10 +81,10 @@
                 {
                     "name": "",
                     "id": "542817ac-6295-4659-8d3f-19437a0ff44f",
-                    "path": "<XInputController>/leftStick/down",
+                    "path": "<Gamepad>/leftStick/down",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Duck",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -94,15 +94,9 @@
     ],
     "controlSchemes": [
         {
-            "name": "XboxController",
-            "bindingGroup": "XboxController",
-            "devices": [
-                {
-                    "devicePath": "<XInputController>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
+            "name": "Gamepad",
+            "bindingGroup": "Gamepad",
+            "devices": []
         }
     ]
 }
