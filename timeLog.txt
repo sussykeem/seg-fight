@@ -13,4 +13,23 @@ Karim @ apartment
 2-23-2023: 10 Mins
 Blake @ apartment
 	Set up Unity git hub connection from Karim's work. 
+
+3-07-2023: 3 Hours
+Randy @ home
+	Created a main menu scene and options scene with working buttons. Music script between scene transitions.
+
+3-15-2023: 4 Hours
+Karim @ home
+	Drawing characters for the game
+
+3-23-2023: 2 Hours
+Blake @ apartment 
+	Adds xbox controller compatability and begins creating a player controller that works with controllers.
+
+3-25-2023: 1 Hours
+Turner @ home
+	Made controls work on all gamepads and made temporary assets for testing.
+
+
+
 	
