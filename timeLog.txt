@@ -30,6 +30,11 @@ Blake @ apartment
 Turner @ home
 	Made controls work on all gamepads and made temporary assets for testing.
 
+4-07-2023: 4 Hours
+Blake & Karim @ MK Study Room
+	Karim worked on animation and character designs and consulted with Blake on code
+	Blake worked on getting a testing arena created as well as the player controller script and consulted on designs
+
 
 
 	
