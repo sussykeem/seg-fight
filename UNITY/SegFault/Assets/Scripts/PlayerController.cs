@@ -21,8 +21,6 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         MoveDir = controls.Gameplay.Movement.ReadValue<Vector2>();
-
-        
     }
     private void FixedUpdate()
     {
