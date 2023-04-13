@@ -22,6 +22,11 @@ public class PlayerController : MonoBehaviour
     {
         MoveDir = controls.Gameplay.Movement.ReadValue<Vector2>();
     }
+
+    public void OnMove()
+    {
+        MoveDir = controls.Gameplay.Movement.ReadValue<Vector2>();
+    }
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(MoveDir.x * moveSpeed, 0);
