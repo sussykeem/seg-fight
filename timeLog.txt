@@ -4,7 +4,7 @@ Team Meeting at Panda Express
 
 2-23-2023: 2 Hours
 Team Meeting at Panda Express
-	We discuessed what the fighting game will look like and how to begin coding it through Unity. We did our project proposal and sent it to Doctor Emrich.
+	We discussed what the fighting game will look like and how to begin coding it through Unity. We did our project proposal and sent it to Doctor Emrich.
 
 2-23-2023: 40 Mins
 Karim @ apartment
@@ -34,6 +34,25 @@ Turner @ home
 Blake & Karim @ MK Study Room
 	Karim worked on animation and character designs and consulted with Blake on code
 	Blake worked on getting a testing arena created as well as the player controller script and consulted on designs
+
+4-11-2023: 1 Hour
+Blake @ Home
+	Worked on the controller while also working on spawner and map
+
+4-15-2023: 2 Hours
+Karim @ Home
+	Worked on attack animations
+
+4-19-2023: 2 Hours
+Randy @ Home
+	Rework start screen and control screen
+
+4-20-2023: 2 Hours
+Turner @ Home
+	Worked on character select screen
+
+
+
 
 
 
