@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rand(Y)
       objectReference: {fileID: 0}
+    - target: {fileID: 4254840452638568751, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+      propertyPath: Character
+      value: 
+      objectReference: {fileID: 1350002914369462526}
     - target: {fileID: 6311444963058832482, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -69,3 +73,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+--- !u!1 &1350002914369462526 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2764508117882646211, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+  m_PrefabInstance: {fileID: 3810516988224065085}
+  m_PrefabAsset: {fileID: 0}

@@ -54,8 +54,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2764508117882646211, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_Name
-      value: TurnerTwist
+      value: THG
       objectReference: {fileID: 0}
+    - target: {fileID: 4254840452638568751, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+      propertyPath: Character
+      value: 
+      objectReference: {fileID: 6513615711942053582}
     - target: {fileID: 6311444963058832482, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -69,3 +73,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+--- !u!1 &6513615711942053582 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2764508117882646211, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+  m_PrefabInstance: {fileID: 8951048874179534861}
+  m_PrefabAsset: {fileID: 0}
