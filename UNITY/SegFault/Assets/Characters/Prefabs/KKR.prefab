@@ -100,8 +100,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -9039147431988776002, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -9039147431988776002, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_NeverAutoSwitchControlSchemes
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -9039147431988776002, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_ActionId
+      value: 34eb17a6-a753-4eb7-a27e-351b1825a7ad
+      objectReference: {fileID: 0}
+    - target: {fileID: -9039147431988776002, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_ActionName
+      value: Gameplay/Join[/XInputControllerWindows/start,/Keyboard/anyKey]
       objectReference: {fileID: 0}
     - target: {fileID: 2280349931888107007, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_RootOrder
@@ -169,7 +181,7 @@ PrefabInstance:
       objectReference: {fileID: 8425405401037208117}
     - target: {fileID: 6311444963058832482, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_FlipX
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6311444963058832482, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_Sprite
@@ -187,7 +199,8 @@ PrefabInstance:
       propertyPath: m_GravityScale
       value: 90
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -9039147431988776002, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8247983330624749575, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
     m_AddedGameObjects:

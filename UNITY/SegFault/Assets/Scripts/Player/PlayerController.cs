@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     public GameObject Character;
     public string charName;
     
-    public PlayerControls controls;
     private Rigidbody2D rb;
 
     public float canMove = 0.0f;
@@ -27,11 +26,12 @@ public class PlayerController : MonoBehaviour
     public bool isBlock = false;
     public float blockThreshold = -0.5f;
 
+    public bool flipped = false;
+
     public float health = 0.0f;
     private Dictionary<int, float>[] moveContainer;
     private void Awake()
     {
-        controls = new PlayerControls();
         rb = Character.GetComponent<Rigidbody2D>();
         jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * rb.gravityScale - 10));
         gcs = groundCheckObj.GetComponent<groundCheck>();
@@ -45,9 +45,9 @@ public class PlayerController : MonoBehaviour
             new Dictionary<int, float>()
         };
 
-        //ReadCharInfo();
-        //Debug.Log(health);
-        //Debug.Log(moveContainer[0].Keys + " " + moveContainer[0].Values);
+        ReadCharInfo();
+        Debug.Log(health);
+        Debug.Log(moveContainer[0].Keys + " " + moveContainer[0].Values);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -75,8 +75,10 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
-        
-        
+        if (transform.position.x == GameObject.FindGameObjectsWithTag("Player")[1].transform.position.x)
+        {
+            rotChar();
+        }
     }
 
     private void ReadCharInfo() //Gets each character's info from a text file
@@ -99,13 +101,16 @@ public class PlayerController : MonoBehaviour
         }
         reader.Close();
     }
-    private void OnEnable()
+    private void rotChar()
     {
-        controls.Gameplay.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Gameplay.Disable();
+        if(!flipped)
+        {
+            Vector3 eulerRot;
+            Quaternion flippedQuat;
+            eulerRot = transform.rotation.eulerAngles;
+            flippedQuat = Quaternion.Euler(eulerRot.x, eulerRot.y+180, eulerRot.z);
+            transform.rotation = flippedQuat;
+            flipped = true;
+        }
     }
 }

@@ -7,7 +7,6 @@ public class PlayerSpawnManageer : MonoBehaviour
 {
     public GameObject[] spawnPoints = new GameObject[2];
     public static PlayerSpawnManageer instance = null;
-    private Gamepad pairWithDevice;
 
     private void Awake()
     {
