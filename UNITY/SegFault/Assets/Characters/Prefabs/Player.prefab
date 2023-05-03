@@ -100,10 +100,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.4
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 60
+  m_GravityScale: 10
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -113,7 +113,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &1517894249524260839
 BoxCollider2D:
@@ -175,15 +175,24 @@ MonoBehaviour:
   Character: {fileID: 0}
   charName: 
   canMove: 0
-  moveSpeed: 9.1
+  gMoveSpeed: 25
+  aMoveSpeed: 35
+  curMoveSpeed: 0
   moveTime: 1
+  moveDist: 3
+  atPos: 1
   MoveDir: {x: 0, y: 0}
-  jumpHeight: 3
-  jumpForce: 0
+  jumpForce: 28
   onGround: 0
+  horizontalJump: 4.5
+  vertDamper: 14
+  jumpTime: 0.5
+  canJump: 0
   groundCheckObj: {fileID: 0}
   isBlock: 0
   blockThreshold: -0.5
+  repelFactor: 0.01
+  flipped: 0
   health: 0
 --- !u!1 &8247983330624749575
 GameObject:

@@ -8,32 +8,53 @@ public class PlayerController : MonoBehaviour
 {
     public GameObject Character;
     public string charName;
+
+    private GameObject [] players;
+    private GameObject otherPlayer;
     
     private Rigidbody2D rb;
 
+    //Horizontal Moving Variables
     public float canMove = 0.0f;
-    public float moveSpeed = 35f;
+    public float gMoveSpeed = 25.0f;
+    public float aMoveSpeed = 35.0f;
+    public float curMoveSpeed = 0;
     public float moveTime = 1.0f;
+    public float moveDist = 3f;
+    public bool atPos = true;
     public Vector2 MoveDir = Vector2.zero;
 
-    public float jumpHeight = 3.0f;
-    public float jumpForce = 0.0f; 
+    //Jumping Variables
+    public float jumpForce = 28.0f;
     public bool onGround = false;
+    public float horizontalJump = 4.5f;
+    public float vertDamper = 14f;
+    public float jumpTime = 0.5f;
+    public float canJump = 0.0f;
+    private Vector2 jumpMoveDir = Vector2.zero;
 
     public GameObject groundCheckObj;
     groundCheck gcs;
 
+    //Blocking Variables
     public bool isBlock = false;
     public float blockThreshold = -0.5f;
 
+    //Relative Pos, for flipping sprites, to face each other
+    public float relativeX = 0.0f;
+    public float curRelativeX = 0.0f;
     public bool flipped = false;
+    public float flipTime = 1.0f;
+    public float canFlip = 0.0f;
+
+    //For collision detection and stuff
+    private Coroutine moveCo;
 
     public float health = 0.0f;
     private Dictionary<int, float>[] moveContainer;
     private void Awake()
     {
         rb = Character.GetComponent<Rigidbody2D>();
-        jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * rb.gravityScale - 10));
         gcs = groundCheckObj.GetComponent<groundCheck>();
         charName = Character.name;
         charName = charName.Substring(0, charName.Length - 7);
@@ -50,14 +71,34 @@ public class PlayerController : MonoBehaviour
         Debug.Log(moveContainer[0].Keys + " " + moveContainer[0].Values);
     }
 
+    private void Start()
+    {
+        players = GameObject.FindGameObjectsWithTag("Player");
+        if (players[0].name == gameObject.name)
+        { //Player[0] is this player, so this player is player1
+            otherPlayer = players[1];
+        }
+        else
+        { //Player[0] is not this player, so this player is player2
+            otherPlayer = players[0];
+        }
+        relativeX = (transform.position - otherPlayer.transform.position).normalized.x;
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
         MoveDir = context.ReadValue<Vector2>();
     }
     private void FixedUpdate()
     {
-        canMove = canMove - Time.deltaTime;
         onGround = gcs.onGround;
+        curRelativeX = (transform.position - otherPlayer.transform.position).normalized.x;
+
+        if (onGround){ //if on ground count down to when they can jump and move on the ground
+            canMove -= Time.deltaTime;
+            canJump -= Time.deltaTime;
+            canFlip -= Time.deltaTime;
+        }
 
         if(MoveDir.y <= blockThreshold) //Character is blocking if they are holding down
         {
@@ -66,18 +107,74 @@ public class PlayerController : MonoBehaviour
         {
             isBlock = false;
         }
-        if (canMove <= 0.0f && !isBlock) //Character can move if they are not blocking and its been time since the last move
-        {   
-            rb.AddForce(new Vector2(MoveDir.x * moveSpeed, 0), ForceMode2D.Impulse);
+        if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5) //Character can move if they are not blocking and its been time since the last move
+        {
+            atPos = false;
+            HorizMove();
             canMove = moveTime;
         }
-        if (onGround && MoveDir.y > 0) //Character can jump if they are not on the ground and pressing up
+        if (onGround && MoveDir.y >= 0.5 && atPos == true && canJump <= 0.0f) //Character can jump if they are on the ground and pressing up
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            var curForce = jumpForce - vertDamper * MoveDir.y;
+            jumpMoveDir = MoveDir.normalized;
+            jumpMoveDir = new Vector2(jumpMoveDir.x * horizontalJump, jumpMoveDir.y * curForce);
+            rb.AddForce(jumpMoveDir, ForceMode2D.Impulse);
+            canJump = jumpTime;
         }
-        if (transform.position.x == GameObject.FindGameObjectsWithTag("Player")[1].transform.position.x)
+        if ((curRelativeX < relativeX - .5 || curRelativeX > relativeX + .5) && onGround && canFlip <= 0.0f)
         {
+            relativeX = curRelativeX;
             rotChar();
+            canFlip = flipTime;
+        }
+
+        //Making sure these values don't grow up to an absurd size
+        if(canJump < -1)
+        {
+            canJump = -1;
+        }
+        if(canMove < -1)
+        {
+            canMove = -1;
+        }
+        if(canFlip < -1)
+        {
+            canFlip = -1;
+        }
+    }
+
+    private void HorizMove() //this moves the player horizontally using the MovePlayer coroutine, from their current position to set endPos in a setTime
+    {
+        StopAllCoroutines();
+        if (atPos == false)
+        {
+            Vector2 movePos = new Vector2(transform.position.x + MoveDir.normalized.x * moveDist, transform.position.y);
+            moveCo = StartCoroutine(MovePlayer(movePos));
+        }
+    }
+
+    IEnumerator MovePlayer(Vector2 targetPos)
+    {
+        float timeElap = 0;
+        Vector2 startPos = transform.position;
+        while (timeElap < moveTime)
+        {
+            var t = Mathf.SmoothStep(0, 1, timeElap / moveTime);
+            transform.position = Vector2.Lerp(startPos, targetPos, t);
+            timeElap += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = targetPos;
+        atPos = true;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject == otherPlayer)
+        {
+            StopCoroutine(moveCo);
+            atPos = true;
+            canMove = -1;
         }
     }
 
@@ -103,14 +200,8 @@ public class PlayerController : MonoBehaviour
     }
     private void rotChar()
     {
-        if(!flipped)
-        {
-            Vector3 eulerRot;
-            Quaternion flippedQuat;
-            eulerRot = transform.rotation.eulerAngles;
-            flippedQuat = Quaternion.Euler(eulerRot.x, eulerRot.y+180, eulerRot.z);
-            transform.rotation = flippedQuat;
-            flipped = true;
-        }
+        flipped = !flipped;
+        var spriteRen = gameObject.GetComponent<SpriteRenderer>();
+        spriteRen.flipX = flipped;
     }
 }

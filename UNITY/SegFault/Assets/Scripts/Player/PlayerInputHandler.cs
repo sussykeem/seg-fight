@@ -29,8 +29,8 @@ public class PlayerInputHandler : MonoBehaviour
                 rotPlayer = 180;
                 spawnPos = PlayerSpawnManageer.instance.spawnPoints[1].transform.position;
             } else { //Player 1
-                playerOb = playerPrefab[player];
-                eulerRot = playerPrefab[player].transform.rotation.eulerAngles;
+                playerOb = playerPrefab[1];
+                eulerRot = playerPrefab[1].transform.rotation.eulerAngles;
                 spawnPos = PlayerSpawnManageer.instance.spawnPoints[0].transform.position;
             }
             fixedQuat = Quaternion.Euler(eulerRot.x, eulerRot.y + rotPlayer, eulerRot.z);
