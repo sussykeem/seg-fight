@@ -9,8 +9,10 @@ public class PlayerController : MonoBehaviour
     public GameObject Character;
     public string charName;
 
+    private PlayerControls playerControls;
+
     private GameObject [] players;
-    private GameObject otherPlayer;
+    public GameObject otherPlayer;
     
     private Rigidbody2D rb;
 
@@ -41,21 +43,28 @@ public class PlayerController : MonoBehaviour
     public float blockThreshold = -0.5f;
 
     //Relative Pos, for flipping sprites, to face each other
-    public float relativeX = 0.0f;
-    public float curRelativeX = 0.0f;
     public bool flipped = false;
     public float flipTime = 1.0f;
     public float canFlip = 0.0f;
+    public float flipSwap = 1;
 
     //For collision detection and stuff
     private Coroutine moveCo;
 
+    //Getting Character Information
     public float health = 0.0f;
     private Dictionary<int, float>[] moveContainer;
+
+    //Attacking Variables
+    public BoxCollider2D damageCollider;
+
     private void Awake()
     {
+        playerControls = new PlayerControls();
         rb = Character.GetComponent<Rigidbody2D>();
         gcs = groundCheckObj.GetComponent<groundCheck>();
+        damageCollider = gameObject.GetComponent<BoxCollider2D>();
+        damageCollider.enabled = false;
         charName = Character.name;
         charName = charName.Substring(0, charName.Length - 7);
         moveContainer = new []
@@ -71,6 +80,16 @@ public class PlayerController : MonoBehaviour
         Debug.Log(moveContainer[0].Keys + " " + moveContainer[0].Values);
     }
 
+    private void OnEnable()
+    {
+        playerControls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerControls.Disable();
+    }
+
     private void Start()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -82,7 +101,6 @@ public class PlayerController : MonoBehaviour
         { //Player[0] is not this player, so this player is player2
             otherPlayer = players[0];
         }
-        relativeX = (transform.position - otherPlayer.transform.position).normalized.x;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -92,7 +110,6 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         onGround = gcs.onGround;
-        curRelativeX = (transform.position - otherPlayer.transform.position).normalized.x;
 
         if (onGround){ //if on ground count down to when they can jump and move on the ground
             canMove -= Time.deltaTime;
@@ -121,15 +138,20 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(jumpMoveDir, ForceMode2D.Impulse);
             canJump = jumpTime;
         }
-        if ((curRelativeX < relativeX - .5 || curRelativeX > relativeX + .5) && onGround && canFlip <= 0.0f)
+
+        if (onGround && otherPlayer.GetComponent<PlayerController>().onGround && canFlip <= 0)
         {
-            relativeX = curRelativeX;
             rotChar();
-            canFlip = flipTime;
         }
 
-        //Making sure these values don't grow up to an absurd size
-        if(canJump < -1)
+        if (playerControls.Gameplay.LightAttack.triggered)
+        {
+            damageCollider.enabled = true;
+            Debug.Log("Light Attack");
+        }
+
+            //Making sure these values don't grow up to an absurd size
+        if (canJump < -1)
         {
             canJump = -1;
         }
@@ -198,10 +220,30 @@ public class PlayerController : MonoBehaviour
         }
         reader.Close();
     }
-    private void rotChar()
+    public void rotChar()
     {
-        flipped = !flipped;
-        var spriteRen = gameObject.GetComponent<SpriteRenderer>();
-        spriteRen.flipX = flipped;
+        if (flipped)
+        {
+            flipSwap = -1;
+        } else
+        {
+            flipSwap = 1;
+        }
+
+        float directionScale = Mathf.Sign(otherPlayer.transform.position.x - transform.position.x) * flipSwap;
+        var eulerAngle = transform.rotation.eulerAngles;
+        var fixedQuat = Quaternion.Euler(eulerAngle.x, eulerAngle.y + 180, eulerAngle.z);
+
+        if (players[0].name == gameObject.name && directionScale < 0)
+        {
+            flipped = !flipped;
+            transform.rotation = fixedQuat;
+            canFlip = flipTime;
+        } else if (players[1].name == gameObject.name && directionScale > 0)
+        {
+            flipped = !flipped;
+            transform.rotation = fixedQuat;
+            canFlip = flipTime;
+        }
     }
 }

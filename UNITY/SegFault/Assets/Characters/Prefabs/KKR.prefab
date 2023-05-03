@@ -121,15 +121,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2280349931888107007, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2280349931888107007, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.24
+      value: -16.46
       objectReference: {fileID: 0}
     - target: {fileID: 2280349931888107007, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.86
+      value: -1.47
       objectReference: {fileID: 0}
     - target: {fileID: 2280349931888107007, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_LocalPosition.z
@@ -216,6 +216,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2764508117882646211, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7680485889539517208}
+    - targetCorrespondingSourceObject: {fileID: 2764508117882646211, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4045292753716664327}
   m_SourcePrefab: {fileID: 100100000, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
 --- !u!1 &764814296316134132 stripped
 GameObject:
@@ -257,6 +260,51 @@ CapsuleCollider2D:
   m_Offset: {x: -0.23275328, y: 0.44056776}
   m_Size: {x: 2.0382261, y: 2.453856}
   m_Direction: 0
+--- !u!61 &4045292753716664327
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764814296316134132}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.7181406, y: 0.15388703}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 4}
+    newSize: {x: 4, y: 4}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.5637188, y: 1.8455806}
+  m_EdgeRadius: 0
 --- !u!4 &3703583830146462152 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2280349931888107007, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
