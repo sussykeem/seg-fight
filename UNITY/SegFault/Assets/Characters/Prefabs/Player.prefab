@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2280349931888107007}
   - component: {fileID: 6311444963058832482}
   - component: {fileID: 6462642563450961314}
-  - component: {fileID: 1517894249524260839}
   - component: {fileID: 4254840452638568751}
   m_Layer: 0
   m_Name: Player
@@ -34,7 +33,7 @@ Transform:
   m_Children:
   - {fileID: 3449512669238150097}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6311444963058832482
 SpriteRenderer:
@@ -115,51 +114,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!61 &1517894249524260839
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2764508117882646211}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.13953519, y: 0.08372116}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4, y: 4}
-    newSize: {x: 4, y: 4}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 3.0511613, y: 3.8325577}
-  m_EdgeRadius: 0
 --- !u!114 &4254840452638568751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,8 +145,11 @@ MonoBehaviour:
   groundCheckObj: {fileID: 0}
   isBlock: 0
   blockThreshold: -0.5
-  repelFactor: 0.01
+  relativeX: 0
+  curRelativeX: 0
   flipped: 0
+  flipTime: 1
+  canFlip: 0
   health: 0
 --- !u!1 &8247983330624749575
 GameObject:
