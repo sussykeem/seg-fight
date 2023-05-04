@@ -17,5 +17,4 @@ public class MainMenu : MonoBehaviour
         EditorApplication.isPlaying = false; // so it quits in test
         Application.Quit();
     }
-    
 }
