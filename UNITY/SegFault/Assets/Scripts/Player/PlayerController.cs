@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour
     public GameObject Character;
     public string charName;
 
-    private PlayerControls playerControls;
-
     private GameObject [] players;
     public GameObject otherPlayer;
     
@@ -56,19 +54,27 @@ public class PlayerController : MonoBehaviour
     private Dictionary<int, float>[] moveContainer;
 
     //Attacking Variables
-    public BoxCollider2D damageCollider;
+    public BoxCollider2D[] damageColliders;
+    public BoxCollider2D lCol, hCol, spCol, shCol;
+    public bool lAtt, hAtt, spAtt, shAtt = false;
+    public float lAttTime, hAttTime, spAttTime, shAttTime;
+    public float canAttack = 0.0f;
 
     private void Awake()
     {
-        playerControls = new PlayerControls();
         rb = Character.GetComponent<Rigidbody2D>();
         gcs = groundCheckObj.GetComponent<groundCheck>();
-        damageCollider = gameObject.GetComponent<BoxCollider2D>();
-        damageCollider.enabled = false;
+
+        damageColliders = gameObject.GetComponentsInChildren<BoxCollider2D>();
+        lCol = damageColliders[0];
+        hCol = damageColliders[1];
+        spCol = damageColliders[2];
+        shCol = damageColliders[3];
+
         charName = Character.name;
         charName = charName.Substring(0, charName.Length - 7);
-        moveContainer = new []
-        {   
+        moveContainer = new[]
+        {
             new Dictionary<int, float>(),
             new Dictionary<int, float>(),
             new Dictionary<int, float>(),
@@ -76,18 +82,8 @@ public class PlayerController : MonoBehaviour
         };
 
         ReadCharInfo();
-        Debug.Log(health);
-        Debug.Log(moveContainer[0].Keys + " " + moveContainer[0].Values);
-    }
-
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControls.Disable();
+        //Debug.Log(health);
+        //Debug.Log(moveContainer[0].Keys + " " + moveContainer[0].Values);
     }
 
     private void Start()
@@ -104,8 +100,56 @@ public class PlayerController : MonoBehaviour
     }
 
     public void OnMove(InputAction.CallbackContext context)
-    {
+    { // Get Move values
         MoveDir = context.ReadValue<Vector2>();
+    }
+
+    public void OnLAtt(InputAction.CallbackContext context)
+    { // Get light attack value
+        if (context.performed)
+        {
+            lAtt = true;
+        }
+        if (context.canceled)
+        {
+            lAtt = false;
+        }
+    }
+
+    public void OnHAtt(InputAction.CallbackContext context)
+    { // Get heavy attack value
+        if (context.performed)
+        {
+            hAtt = true;
+        }
+        if (context.canceled)
+        {
+            hAtt = false;
+        }
+    }
+
+    public void OnShAtt(InputAction.CallbackContext context)
+    { // Get sheild break value
+        if (context.performed)
+        {
+            shAtt = true;
+        }
+        if (context.canceled)
+        {
+            shAtt = false;
+        }
+    }
+
+    public void OnSpAtt(InputAction.CallbackContext context)
+    { // Get special attack value
+        if (context.performed)
+        {
+            spAtt = true;
+        }
+        if (context.canceled)
+        {
+            spAtt = false;
+        }
     }
     private void FixedUpdate()
     {
@@ -115,6 +159,7 @@ public class PlayerController : MonoBehaviour
             canMove -= Time.deltaTime;
             canJump -= Time.deltaTime;
             canFlip -= Time.deltaTime;
+            canAttack -= Time.deltaTime;
         }
 
         if(MoveDir.y <= blockThreshold) //Character is blocking if they are holding down
@@ -144,25 +189,12 @@ public class PlayerController : MonoBehaviour
             rotChar();
         }
 
-        if (playerControls.Gameplay.LightAttack.triggered)
+        if(onGround && canAttack <= 0)
         {
-            damageCollider.enabled = true;
-            Debug.Log("Light Attack");
+            attack();
         }
 
-            //Making sure these values don't grow up to an absurd size
-        if (canJump < -1)
-        {
-            canJump = -1;
-        }
-        if(canMove < -1)
-        {
-            canMove = -1;
-        }
-        if(canFlip < -1)
-        {
-            canFlip = -1;
-        }
+        normalizeTimers();
     }
 
     private void HorizMove() //this moves the player horizontally using the MovePlayer coroutine, from their current position to set endPos in a setTime
@@ -244,6 +276,74 @@ public class PlayerController : MonoBehaviour
             flipped = !flipped;
             transform.rotation = fixedQuat;
             canFlip = flipTime;
+        }
+    }
+
+    private void attack()
+    {
+        if (lAtt)
+        {
+            lCol.enabled = true;
+            canAttack = lAttTime;
+            return;
+        }
+        else
+        {
+            lCol.enabled = false;
+        }
+
+        if (hAtt)
+        {
+            hCol.enabled = true;
+            canAttack = hAttTime;
+            return;
+        }
+        else
+        {
+            hCol.enabled = false;
+        }
+
+        if (spAtt)
+        {
+            hCol.enabled = true;
+            canAttack = spAttTime;
+            return;
+        }
+        else
+        {
+            hCol.enabled = false;
+        }
+
+        if (shAtt)
+        {
+            hCol.enabled = true;
+            canAttack = shAttTime;
+            return;
+        }
+        else
+        {
+            hCol.enabled = false;
+        }
+    }
+
+    private void normalizeTimers()
+    {
+        //Making sure these values don't grow up to an absurd size
+        if (canJump < -1)
+        {
+            canJump = -1;
+        }
+        if (canMove < -1)
+        {
+            canMove = -1;
+        }
+        if (canFlip < -1)
+        {
+            canFlip = -1;
+        }
+        if (canAttack < -1)
+        {
+            canAttack = -1;
         }
     }
 }

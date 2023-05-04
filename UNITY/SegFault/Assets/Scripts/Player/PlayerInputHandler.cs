@@ -41,7 +41,28 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     public void OnMove(InputAction.CallbackContext context)
-    {
+    { //Handles player move
         playerController.OnMove(context);
     }
+
+    public void OnLAtt(InputAction.CallbackContext context)
+    { //Handles player light attack
+        playerController.OnLAtt(context);
+    }
+
+    public void OnHAtt(InputAction.CallbackContext context)
+    { //Handles player heavy attack
+        playerController.OnHAtt(context);
+    }
+
+    public void OnShAtt(InputAction.CallbackContext context)
+    { //Handles player shield break
+        playerController.OnShAtt(context);
+    }
+
+    public void OnSpAtt(InputAction.CallbackContext context)
+    { //Handles player special attack
+        playerController.OnSpAtt(context);
+    }
 }
+

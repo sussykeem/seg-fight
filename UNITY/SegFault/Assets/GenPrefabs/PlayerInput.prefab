@@ -50,6 +50,9 @@ MonoBehaviour:
   - {fileID: 764814296316134132, guid: 480ea9e173e0b284c9be70400b4a5552, type: 3}
   - {fileID: 1350002914369462526, guid: 012edffdb0eec504e8715a477ed76ef8, type: 3}
   - {fileID: 6513615711942053582, guid: e654bc4836dd9954d81e4aa390841f70, type: 3}
+  playerC: 0
+  player: 0
+  rotPlayer: 0
 --- !u!114 &1858242622246687695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,6 +98,70 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 34eb17a6-a753-4eb7-a27e-351b1825a7ad
     m_ActionName: Gameplay/Join[/XInputControllerWindows/start,/Keyboard/anyKey]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 973532396883780114}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnLAtt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2c0a6caa-8419-4336-bb4c-a990a3d7766d
+    m_ActionName: Gameplay/Light Attack[/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 973532396883780114}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnHAtt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6d7b46a2-bfd4-4417-acff-33cea56e1468
+    m_ActionName: Gameplay/Heavy Attack[/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 973532396883780114}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnSpAtt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5dfa78da-9f25-4131-8cf1-7a4018bbb6c6
+    m_ActionName: Gameplay/Special Attack[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 973532396883780114}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnShAtt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3d4e99f8-a02c-465c-ade2-275ec9095ece
+    m_ActionName: Gameplay/Shield Break[/Keyboard/s]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Gameplay
