@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 28.0f;
     public bool onGround = false;
     public float horizontalJump = 4.5f;
-    public float vertDamper = 14f;
+    public float vertDamper = 14.5f;
     public float jumpTime = 0.5f;
     public float canJump = 0.0f;
     private Vector2 jumpMoveDir = Vector2.zero;
@@ -50,8 +50,8 @@ public class PlayerController : MonoBehaviour
     private Coroutine moveCo;
 
     //Getting Character Information
-    public float health = 0.0f;
-    private Dictionary<int, float>[] moveContainer;
+    public int health = 100;
+    private Dictionary<int, int[]>[] moveContainer;
 
     //Attacking Variables
     public BoxCollider2D[] damageColliders;
@@ -75,15 +75,29 @@ public class PlayerController : MonoBehaviour
         charName = charName.Substring(0, charName.Length - 7);
         moveContainer = new[]
         {
-            new Dictionary<int, float>(),
-            new Dictionary<int, float>(),
-            new Dictionary<int, float>(),
-            new Dictionary<int, float>()
+            new Dictionary<int, int[]>(),
+            new Dictionary<int, int[]>(),
+            new Dictionary<int, int[]>(),
+            new Dictionary<int, int[]>()
         };
 
         ReadCharInfo();
-        //Debug.Log(health);
-        //Debug.Log(moveContainer[0].Keys + " " + moveContainer[0].Values);
+
+        /* Loop through moveContainer Dictionary 
+        for(int i = 0; i < moveContainer.Length; i++)
+        {
+            foreach( var testValue in moveContainer[i])
+            {
+                var damg = testValue.Key;
+                var result = testValue.Value;
+                Debug.Log(damg);
+                for(int j = 0; j < result.Length; j++)
+                {
+                    Debug.Log(", " + result[j]);
+                }
+            }
+        }
+        */
     }
 
     private void Start()
@@ -234,20 +248,33 @@ public class PlayerController : MonoBehaviour
 
     private void ReadCharInfo() //Gets each character's info from a text file
     {
-        int counter = 0;
+        int counter = 1;
+        int moveNum = 0;
+        int dmgKey = 0;
         string first, second;
+        string[] secondWords;
         string path = "Assets/Characters/CharInfo/" + charName + ".txt";
         //Read the text from directly from the test.txt file
         StreamReader reader = new StreamReader(path);
         while (!reader.EndOfStream)
         {
-            if(counter == 0) //get character's health
-            {
-                health = float.Parse(reader.ReadLine());
+            if (counter % 2 != 0)
+            { //Getting Damage of move, key for Dictionaries
+                first = reader.ReadLine();
+                dmgKey = int.Parse(first);
             }
-            first = reader.ReadLine();
-            second = reader.ReadLine();
-            moveContainer[counter].Add(int.Parse(first), float.Parse(second));
+            else
+            { //Getting the Damage frames of the move, val for Dictionaries
+                second = reader.ReadLine();
+                secondWords = second.Split(' ');
+                int[] tempFramVal = new int[secondWords.Length];
+                for (int i = 0; i < secondWords.Length; i++)
+                {
+                    tempFramVal[i] = int.Parse(secondWords[i]);
+                }
+                moveContainer[moveNum].Add(dmgKey, tempFramVal);
+                moveNum++;
+            }
             counter++;
         }
         reader.Close();
