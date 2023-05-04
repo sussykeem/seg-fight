@@ -1,0 +1,8 @@
+Light Attack Damage
+Light Attack Damage Frames
+Heavy Attack Damage
+Heavy Attack Damage Frames
+Special Attack Damage
+Special Attack Damage Frames
+Shield Break Attack Damage
+Shield Break Attack Damage Frames
