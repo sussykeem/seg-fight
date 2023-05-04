@@ -9,5 +9,11 @@ public class ButtonSound : MonoBehaviour
     {
         audioManager = FindObjectOfType<AudioManager>();
         audioManager.Play("Button Press");
-    }  
+    }
+
+    public void button_swoosh()
+    {
+        audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Play("Button Swoosh");
+    }
 }
