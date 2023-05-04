@@ -51,12 +51,13 @@ public class PlayerController : MonoBehaviour
 
     //Getting Character Information
     public int health = 100;
-    private Dictionary<int, int[]>[] moveContainer;
+    public Dictionary<int, int[]>[] moveContainer;
 
     //Attacking Variables
     public BoxCollider2D[] damageColliders;
-    public BoxCollider2D lCol, hCol, spCol, shCol;
+    public attackScri attackScript;
     public bool lAtt, hAtt, spAtt, shAtt = false;
+    public bool[] attackType = new bool[4] { false, false, false, false };
     public float lAttTime, hAttTime, spAttTime, shAttTime;
     public float canAttack = 0.0f;
 
@@ -64,12 +65,9 @@ public class PlayerController : MonoBehaviour
     {
         rb = Character.GetComponent<Rigidbody2D>();
         gcs = groundCheckObj.GetComponent<groundCheck>();
+        attackScript = gameObject.GetComponentInChildren<attackScri>();
 
         damageColliders = gameObject.GetComponentsInChildren<BoxCollider2D>();
-        lCol = damageColliders[0];
-        hCol = damageColliders[1];
-        spCol = damageColliders[2];
-        shCol = damageColliders[3];
 
         charName = Character.name;
         charName = charName.Substring(0, charName.Length - 7);
@@ -120,51 +118,60 @@ public class PlayerController : MonoBehaviour
 
     public void OnLAtt(InputAction.CallbackContext context)
     { // Get light attack value
-        if (context.performed)
+        if (context.performed && hAtt == false && spAtt == false && shAtt == false)
         {
             lAtt = true;
+            attackType[0] = lAtt;
         }
         if (context.canceled)
         {
             lAtt = false;
+            attackType[0] = lAtt;
         }
     }
 
     public void OnHAtt(InputAction.CallbackContext context)
     { // Get heavy attack value
-        if (context.performed)
+        if (context.performed && lAtt == false && spAtt == false && shAtt == false)
         {
             hAtt = true;
+            attackType[1] = hAtt;
         }
         if (context.canceled)
         {
             hAtt = false;
-        }
-    }
-
-    public void OnShAtt(InputAction.CallbackContext context)
-    { // Get sheild break value
-        if (context.performed)
-        {
-            shAtt = true;
-        }
-        if (context.canceled)
-        {
-            shAtt = false;
+            attackType[1] = hAtt;
         }
     }
 
     public void OnSpAtt(InputAction.CallbackContext context)
     { // Get special attack value
-        if (context.performed)
+        if (context.performed && hAtt == false && lAtt == false && shAtt == false)
         {
             spAtt = true;
+            attackType[2] = spAtt;
         }
         if (context.canceled)
         {
             spAtt = false;
+            attackType[2] = spAtt;
         }
     }
+
+    public void OnShAtt(InputAction.CallbackContext context)
+    { // Get sheild break value
+        if (context.performed && hAtt == false && spAtt == false && lAtt == false)
+        {
+            shAtt = true;
+            attackType[3] = shAtt;
+        }
+        if (context.canceled)
+        {
+            shAtt = false;
+            attackType[3] = shAtt;
+        }
+    }
+
     private void FixedUpdate()
     {
         onGround = gcs.onGround;
@@ -308,6 +315,8 @@ public class PlayerController : MonoBehaviour
 
     private void attack()
     {
+        attackScri.attack();
+        /*
         if (lAtt)
         {
             lCol.enabled = true;
@@ -332,25 +341,26 @@ public class PlayerController : MonoBehaviour
 
         if (spAtt)
         {
-            hCol.enabled = true;
+            spCol.enabled = true;
             canAttack = spAttTime;
             return;
         }
         else
         {
-            hCol.enabled = false;
+            spCol.enabled = false;
         }
 
         if (shAtt)
         {
-            hCol.enabled = true;
+            shCol.enabled = true;
             canAttack = shAttTime;
             return;
         }
         else
         {
-            hCol.enabled = false;
+            shCol.enabled = false;
         }
+        */
     }
 
     private void normalizeTimers()
