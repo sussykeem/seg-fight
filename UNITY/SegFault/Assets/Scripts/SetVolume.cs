@@ -25,5 +25,6 @@ public class SetVolume : MonoBehaviour
     {
         float volumeVal = PlayerPrefs.GetFloat("Volume");
         volumeSlider.value = volumeVal;
+        AudioListener.volume = volumeVal;
     }
 }
