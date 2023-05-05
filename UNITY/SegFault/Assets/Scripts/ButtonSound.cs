@@ -14,6 +14,6 @@ public class ButtonSound : MonoBehaviour
     public void button_swoosh()
     {
         audioManager = FindObjectOfType<AudioManager>();
-        audioManager.Play("Button Swoosh");
+        audioManager.Play("Bloop");
     }
 }
