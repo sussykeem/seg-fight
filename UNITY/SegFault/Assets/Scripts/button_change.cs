@@ -20,7 +20,7 @@ public class button_change : MonoBehaviour
             button_randy.colors = colorVar;
             button_karim.colors = colorVar;
             button_turner.colors = colorVar;
-            PlayerPrefs.SetString("Player 1", button.name);
+            PlayerPrefs.SetInt("player1", int.Parse(button.name));
             counter++;
 
         }
@@ -34,7 +34,7 @@ public class button_change : MonoBehaviour
             button_karim.colors = colorVar;
             button_turner.colors = colorVar;
             counter++;
-            PlayerPrefs.SetString("Player 2", button.name);
+            PlayerPrefs.SetInt("player2", int.Parse(button.name));
             SceneManager.LoadScene("mapSelect");
 
         }
