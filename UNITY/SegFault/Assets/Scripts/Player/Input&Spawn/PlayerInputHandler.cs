@@ -10,7 +10,8 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerController playerController;
 
     public int playerC;
-    public int player = 0;
+    public int player1 = PlayerPrefs.GetInt("player1");
+    public int player2 = PlayerPrefs.GetInt("player2");
     public int rotPlayer = 0;
 
     Vector2 spawnPos = Vector2.zero;
@@ -24,15 +25,15 @@ public class PlayerInputHandler : MonoBehaviour
         {
             if (playerC > 1)
             { //Player 2
-                playerOb = playerPrefab[player];
-                eulerRot = playerPrefab[player].transform.rotation.eulerAngles;
+                playerOb = playerPrefab[player1];
+                eulerRot = playerPrefab[player1].transform.rotation.eulerAngles;
                 rotPlayer = 180;
                 spawnPos = PlayerSpawnManageer.instance.spawnPoints[1].transform.position;
             }
             else
             { //Player 1
-                playerOb = playerPrefab[1];
-                eulerRot = playerPrefab[1].transform.rotation.eulerAngles;
+                playerOb = playerPrefab[player2];
+                eulerRot = playerPrefab[player2].transform.rotation.eulerAngles;
                 spawnPos = PlayerSpawnManageer.instance.spawnPoints[0].transform.position;
             }
             fixedQuat = Quaternion.Euler(eulerRot.x, eulerRot.y + rotPlayer, eulerRot.z);
