@@ -7,7 +7,7 @@ using System.IO;
 public class PlayerController : MonoBehaviour
 {
     public GameObject Character;
-    public string charName;
+    private string charName;
 
     private GameObject [] players;
     public GameObject otherPlayer;
@@ -15,11 +15,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
 
     //Horizontal Moving Variables
+    public float moveTime = 0.75f;
     public float canMove = 0.0f;
-    public float gMoveSpeed = 25.0f;
-    public float aMoveSpeed = 35.0f;
-    public float curMoveSpeed = 0;
-    public float moveTime = 1.0f;
     public float moveDist = 3f;
     public bool atPos = true;
     public Vector2 MoveDir = Vector2.zero;
@@ -41,45 +38,41 @@ public class PlayerController : MonoBehaviour
     public float blockThreshold = -0.5f;
 
     //Relative Pos, for flipping sprites, to face each other
-    public bool flipped = false;
-    public float flipTime = 1.0f;
-    public float canFlip = 0.0f;
-    public float flipSwap = 1;
+    private bool flipped = false;
+    private float flipTime = 1.0f;
+    private float canFlip = 0.0f;
+    private float flipSwap = 1;
 
     //For collision detection and stuff
     private Coroutine moveCo;
-    private float collisionTime = 0.5f;
+    private float collisionTime = 0.25f;
     private float canStopCollide = 0.0f;
 
     //Getting Character Information
-    public int health = 100;
-    public Dictionary<int, int[]>[] moveContainer;
+    private float health = 100.0f;
+    public Dictionary<int[], int[]>[] moveContainer;
+    //array index is for moveType IE. moveContainer[0] is light attack info
+    //the key int array contains the damage of the move and if the move spawns a projectile or not
+    //the value int array contains the damaging frames of the move
 
     //Attacking Variables
-    public BoxCollider2D[] damageColliders;
-    public attackScri attackScript;
-    public bool lAtt, hAtt, spAtt, shAtt = false;
-    public bool attacked = false;
+    private BoxCollider2D[] damageColliders;
+    public bool lAtt, hAtt, spAtt, shAtt , attacked, projAtt= false;
     public bool[] attackType = new bool[4] { false, false, false, false };
-    public float lAttTime, hAttTime, spAttTime, shAttTime;
     public float attackTime = 1.0f;
-    public float canAttack = 0.0f;
+    private float canAttack = 0.0f;
+    private int frameCounter, frameEnabled, frameDisabled, attInd = 0;
     public int attackPower = 0;
-    public int[] damFrames;
-    public int frameCounter = 0;
-    public int frameEnabled = 0;
-    public int frameDisabled = 0;
-    public int attInd = 0;
+    private int[] damFrames;
 
     //Getting Hit Variables
-    public bool isHit = false;
-    public bool gameOver = false;
+    public bool isHit, gameOver = false;
+    public float blockPadding = 0.5f;
 
     private void Awake()
     {
         rb = Character.GetComponent<Rigidbody2D>();
         gcs = groundCheckObj.GetComponent<groundCheck>();
-        attackScript = gameObject.GetComponentInChildren<attackScri>();
        
         damageColliders = gameObject.GetComponentsInChildren<BoxCollider2D>();
         canStopCollide = collisionTime;
@@ -88,10 +81,10 @@ public class PlayerController : MonoBehaviour
         charName = charName.Substring(0, charName.Length - 7);
         moveContainer = new[]
         {
-            new Dictionary<int, int[]>(),
-            new Dictionary<int, int[]>(),
-            new Dictionary<int, int[]>(),
-            new Dictionary<int, int[]>()
+            new Dictionary<int[], int[]>(),
+            new Dictionary<int[], int[]>(),
+            new Dictionary<int[], int[]>(),
+            new Dictionary<int[], int[]>()
         };
 
         ReadCharInfo();
@@ -274,10 +267,7 @@ public class PlayerController : MonoBehaviour
             atPos = true;
             canMove = -1;
             canStopCollide -= Time.deltaTime;
-        } else
-        {
-            Debug.Log(collisionTime);
-        }
+        } 
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -292,9 +282,9 @@ public class PlayerController : MonoBehaviour
     {
         int counter = 1;
         int moveNum = 0;
-        int dmgKey = 0;
+        int[] tempDam = new int[] { 1 };
         string first, second;
-        string[] secondWords;
+        string[] secondWords, firstWords;
         string path = "Assets/Characters/CharInfo/" + charName + ".txt";
         //Read the text from directly from the test.txt file
         StreamReader reader = new StreamReader(path);
@@ -303,18 +293,23 @@ public class PlayerController : MonoBehaviour
             if (counter % 2 != 0)
             { //Getting Damage of move, key for Dictionaries
                 first = reader.ReadLine();
-                dmgKey = int.Parse(first);
+                firstWords = first.Split(' ');
+                tempDam = new int[firstWords.Length];
+                for (int i = 0; i < firstWords.Length; i++)
+                {
+                    tempDam[i] = int.Parse(firstWords[i]);
+                }
             }
             else
             { //Getting the Damage frames of the move, val for Dictionaries
                 second = reader.ReadLine();
                 secondWords = second.Split(' ');
-                int[] tempFramVal = new int[secondWords.Length];
+                int [] tempFramVal = new int[secondWords.Length];
                 for (int i = 0; i < secondWords.Length; i++)
                 {
                     tempFramVal[i] = int.Parse(secondWords[i]);
                 }
-                moveContainer[moveNum].Add(dmgKey, tempFramVal);
+                moveContainer[moveNum].Add(tempDam, tempFramVal);
                 moveNum++;
             }
             counter++;
@@ -322,7 +317,7 @@ public class PlayerController : MonoBehaviour
         reader.Close();
     }
     public void rotChar()
-    {
+    { // To rotate the characters to make sure they are always facing each other
         if (flipped)
         {
             flipSwap = -1;
@@ -349,14 +344,18 @@ public class PlayerController : MonoBehaviour
     }
 
     private void attack()
-    {
+    { // Handles figuring out what attack the player wants to do
         for (int i = 0; i < attackType.Length; i++)
         {
             if (attackType[i] == true)
             {
                 foreach (var testValue in moveContainer[attInd])
                 {
-                    attackPower = testValue.Key;
+                    if(testValue.Key.Length > 1)
+                    { // checks if the attack is a projectile attack
+                        projAtt = true;
+                    }
+                    attackPower = testValue.Key[0];
                     damFrames = testValue.Value;
                     frameEnabled = damFrames[0]*6; //Frame to enable the collider
                     frameDisabled = (damFrames[damFrames.Length - 1] + 1)*6; //Frame to disable the collider
@@ -376,15 +375,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnHit(int attackDamage)
-    {
+    public void OnHit(float attackDamage)
+    { // what happens when hit
+        if (isBlock)
+        {
+            attackDamage -= attackDamage*blockPadding;
+        }
         health -= attackDamage;
+        isHit = true;
         Debug.Log(gameObject.name + " was hit! Health:" + health);
     }
 
     private void normalizeTimers()
-    {
-        //Making sure these values don't grow up to an absurd size
+    { //Making sure these values don't grow up to an absurd size
         if (canJump < -1)
         {
             canJump = -1;

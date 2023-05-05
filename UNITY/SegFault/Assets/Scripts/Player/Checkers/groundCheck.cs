@@ -15,7 +15,7 @@ public class groundCheck : MonoBehaviour
             onGround = true;
         }
         else if (collision.gameObject.tag == "Player" && onGround == false)
-        {
+        { // this is so a player cannot get stuck on top of another play, it lightly forces the players off eachother
             ptr = transform.parent;
             prb = ptr.GetComponent<Rigidbody2D>();
             var repelDir = -1 * (collision.gameObject.transform.position - ptr.position).normalized.x;
