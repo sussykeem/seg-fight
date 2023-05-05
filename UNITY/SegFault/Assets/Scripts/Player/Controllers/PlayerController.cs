@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
     private float offWall = 0.1f;
 
     //Getting Character Information
-    private float health = 100.0f;
+    public float health = 100.0f;
     public Dictionary<int[], int[]>[] moveContainer;
     //array index is for moveType IE. moveContainer[0] is light attack info
     //the key int array contains the damage of the move and if the move spawns a projectile or not

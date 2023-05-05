@@ -27,15 +27,15 @@ public class PlayerInputHandler : MonoBehaviour
         {
             if (playerC > 1)
             { //Player 2
-                playerOb = playerPrefab[player1];
-                eulerRot = playerPrefab[player1].transform.rotation.eulerAngles;
+                playerOb = playerPrefab[player2];
+                eulerRot = playerPrefab[player2].transform.rotation.eulerAngles;
                 rotPlayer = 180;
                 spawnPos = PlayerSpawnManageer.instance.spawnPoints[1].transform.position;
             }
             else
             { //Player 1
-                playerOb = playerPrefab[player2];
-                eulerRot = playerPrefab[player2].transform.rotation.eulerAngles;
+                playerOb = playerPrefab[player1];
+                eulerRot = playerPrefab[player1].transform.rotation.eulerAngles;
                 spawnPos = PlayerSpawnManageer.instance.spawnPoints[0].transform.position;
             }
             fixedQuat = Quaternion.Euler(eulerRot.x, eulerRot.y + rotPlayer, eulerRot.z);

@@ -90,7 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2764508117882646211, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_Name
-      value: Rand(Y)
+      value: Randy
       objectReference: {fileID: 0}
     - target: {fileID: 3449512669238150097, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
       propertyPath: m_LocalPosition.x
@@ -131,15 +131,59 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1517894249524260839, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
     - {fileID: 707121475896327224, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+    - {fileID: -7920960174969850691, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2764508117882646211, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5204016169583253521}
   m_SourcePrefab: {fileID: 100100000, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
 --- !u!1 &1350002914369462526 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2764508117882646211, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
   m_PrefabInstance: {fileID: 3810516988224065085}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-5204016169583253521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350002914369462526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14c27c74b53fb084fa1181efbcd01814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Character: {fileID: 1350002914369462526}
+  otherPlayer: {fileID: 0}
+  moveTime: 0.75
+  canMove: 0
+  moveDist: 3
+  atPos: 1
+  MoveDir: {x: 0, y: 0}
+  jumpForce: 28
+  onGround: 0
+  horizontalJump: 4.5
+  vertDamper: 14.5
+  jumpTime: 0.5
+  canJump: 0
+  groundCheckObj: {fileID: 4010665475251497979}
+  isBlock: 0
+  blockThreshold: -0.5
+  lAtt: 0
+  hAtt: 0
+  spAtt: 0
+  shAtt: 0
+  attacked: 0
+  projAtt: 0
+  attackType: 00000000
+  attackTime: 1
+  attackPower: 0
+  isHit: 0
+  gameOver: 0
+  blockPadding: 0.5
 --- !u!1 &4010665475251497979 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 236740259791381958, guid: 947d67af105e2ea48bfef77c53156634, type: 3}
