@@ -15,20 +15,22 @@ public class PlayerInputHandler : MonoBehaviour
 
     Vector2 spawnPos = Vector2.zero;
     Vector3 eulerRot = Vector3.zero;
-    Quaternion fixedQuat; 
+    Quaternion fixedQuat;
 
     private void Awake()
     {
         playerC = PlayerInputManager.instance.playerCount;
-        if(playerPrefab != null)
+        if (playerPrefab != null)
         {
-            if(playerC > 1)
+            if (playerC > 1)
             { //Player 2
                 playerOb = playerPrefab[player];
                 eulerRot = playerPrefab[player].transform.rotation.eulerAngles;
                 rotPlayer = 180;
                 spawnPos = PlayerSpawnManageer.instance.spawnPoints[1].transform.position;
-            } else { //Player 1
+            }
+            else
+            { //Player 1
                 playerOb = playerPrefab[1];
                 eulerRot = playerPrefab[1].transform.rotation.eulerAngles;
                 spawnPos = PlayerSpawnManageer.instance.spawnPoints[0].transform.position;

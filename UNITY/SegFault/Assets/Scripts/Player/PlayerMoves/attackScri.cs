@@ -5,14 +5,11 @@ using UnityEngine;
 public class attackScri : MonoBehaviour
 {
     private PlayerController playerController;
-    private Dictionary<int, int[]>[] moveContainer;
-    private int[] damFrames;
-    private bool[] attackType;
-    private BoxCollider2D[] damageColliders;
-    public BoxCollider2D lCol, hCol, spCol, shCol;
+    private BoxCollider2D thisBC;
 
     public bool yesAttack;
-    public int attackPower; 
+    public int attackPower;
+
     private void OnEnable()
     {
         yesAttack = true;
@@ -20,38 +17,23 @@ public class attackScri : MonoBehaviour
     private void Awake()
     {
         playerController = gameObject.GetComponentInParent<PlayerController>(); 
+        thisBC = gameObject.GetComponent<BoxCollider2D>();
     }
-
-    private void Start()
+    private void Update()
     {
-        moveContainer = playerController.moveContainer;
-        damageColliders = playerController.damageColliders;
-        lCol = damageColliders[0];
-        hCol = damageColliders[1];
-        spCol = damageColliders[2];
-        shCol = damageColliders[3];
-    }
-
-    public void FixedUpdate()
-    {
-        attackType = playerController.attackType;    
-    }
-
-    public void attack()
-    {
-        for (int i = 0; i < attackType.Length; i++)
+        if (thisBC.isActiveAndEnabled)
         {
-            if (attackType[i] == true){
-                damageColliders[i].enabled = true;
-                foreach (var testValue in moveContainer[i])
-                {
-                    attackPower = testValue.Key;
-                    damFrames = testValue.Value;
-                }
-            } else if (attackType[i] == false) {
-                damageColliders[i].enabled = false;
-            }
+            yesAttack = true;
+        } else
+        {
+            yesAttack = false;
         }
-
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == playerController.otherPlayer.name && yesAttack)
+        { //The collision was with the other player
+            //playerController.otherPlayer.GetComponent<PlayerController>().OnHit(playerController.attackPower);
+        }
     }
 }

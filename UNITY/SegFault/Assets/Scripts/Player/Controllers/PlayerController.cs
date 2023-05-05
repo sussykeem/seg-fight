@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
 
     //For collision detection and stuff
     private Coroutine moveCo;
+    private float collisionTime = 0.5f;
+    private float canStopCollide = 0.0f;
 
     //Getting Character Information
     public int health = 100;
@@ -57,17 +59,30 @@ public class PlayerController : MonoBehaviour
     public BoxCollider2D[] damageColliders;
     public attackScri attackScript;
     public bool lAtt, hAtt, spAtt, shAtt = false;
+    public bool attacked = false;
     public bool[] attackType = new bool[4] { false, false, false, false };
     public float lAttTime, hAttTime, spAttTime, shAttTime;
+    public float attackTime = 1.0f;
     public float canAttack = 0.0f;
+    public int attackPower = 0;
+    public int[] damFrames;
+    public int frameCounter = 0;
+    public int frameEnabled = 0;
+    public int frameDisabled = 0;
+    public int attInd = 0;
+
+    //Getting Hit Variables
+    public bool isHit = false;
+    public bool gameOver = false;
 
     private void Awake()
     {
         rb = Character.GetComponent<Rigidbody2D>();
         gcs = groundCheckObj.GetComponent<groundCheck>();
         attackScript = gameObject.GetComponentInChildren<attackScri>();
-
+       
         damageColliders = gameObject.GetComponentsInChildren<BoxCollider2D>();
+        canStopCollide = collisionTime;
 
         charName = Character.name;
         charName = charName.Substring(0, charName.Length - 7);
@@ -80,22 +95,6 @@ public class PlayerController : MonoBehaviour
         };
 
         ReadCharInfo();
-
-        /* Loop through moveContainer Dictionary 
-        for(int i = 0; i < moveContainer.Length; i++)
-        {
-            foreach( var testValue in moveContainer[i])
-            {
-                var damg = testValue.Key;
-                var result = testValue.Value;
-                Debug.Log(damg);
-                for(int j = 0; j < result.Length; j++)
-                {
-                    Debug.Log(", " + result[j]);
-                }
-            }
-        }
-        */
     }
 
     private void Start()
@@ -176,6 +175,30 @@ public class PlayerController : MonoBehaviour
     {
         onGround = gcs.onGround;
 
+        if(health <= 0)
+        { //if a player has been killed
+            Debug.Log(gameObject.name + " Died!");
+            gameObject.SetActive(false);
+        }
+
+        if (!otherPlayer.activeSelf)
+        { // if the other player has been killed
+            gameOver = true;
+        }
+
+        if (attacked)
+        {
+            frameCounter++;
+            if(frameCounter == frameEnabled) {
+                damageColliders[attInd].enabled = true;
+            } else if (frameCounter == frameDisabled)
+            {
+                damageColliders[attInd].enabled = false;
+                attacked = false;
+                frameCounter = 0;
+            }
+        }
+
         if (onGround){ //if on ground count down to when they can jump and move on the ground
             canMove -= Time.deltaTime;
             canJump -= Time.deltaTime;
@@ -183,20 +206,20 @@ public class PlayerController : MonoBehaviour
             canAttack -= Time.deltaTime;
         }
 
-        if(MoveDir.y <= blockThreshold) //Character is blocking if they are holding down
+        if(MoveDir.y <= blockThreshold && !gameOver) //Character is blocking if they are holding down
         {
             isBlock = true;
         } else
         {
             isBlock = false;
         }
-        if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5) //Character can move if they are not blocking and its been time since the last move
+        if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5 && !gameOver) //Character can move if they are not blocking and its been time since the last move
         {
             atPos = false;
             HorizMove();
             canMove = moveTime;
         }
-        if (onGround && MoveDir.y >= 0.5 && atPos == true && canJump <= 0.0f) //Character can jump if they are on the ground and pressing up
+        if (onGround && MoveDir.y >= 0.5 && atPos == true && canJump <= 0.0f && !gameOver) //Character can jump if they are on the ground and pressing up
         {
             var curForce = jumpForce - vertDamper * MoveDir.y;
             jumpMoveDir = MoveDir.normalized;
@@ -210,8 +233,8 @@ public class PlayerController : MonoBehaviour
             rotChar();
         }
 
-        if(onGround && canAttack <= 0)
-        {
+        if(onGround && canAttack <= 0 && !gameOver)
+        { //Can attack if you are on the ground and so much time has passed since the last attack
             attack();
         }
 
@@ -245,11 +268,23 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject == otherPlayer)
-        {
+        if (collision.gameObject.name == otherPlayer.name && canStopCollide > 0)
+        { //so players don't jankily pass through each other
             StopCoroutine(moveCo);
             atPos = true;
             canMove = -1;
+            canStopCollide -= Time.deltaTime;
+        } else
+        {
+            Debug.Log(collisionTime);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == otherPlayer.name)
+        { //so players can move after not being able to pass through each other
+            canStopCollide = collisionTime;
         }
     }
 
@@ -315,52 +350,36 @@ public class PlayerController : MonoBehaviour
 
     private void attack()
     {
-        attackScri.attack();
-        /*
-        if (lAtt)
+        for (int i = 0; i < attackType.Length; i++)
         {
-            lCol.enabled = true;
-            canAttack = lAttTime;
-            return;
+            if (attackType[i] == true)
+            {
+                foreach (var testValue in moveContainer[attInd])
+                {
+                    attackPower = testValue.Key;
+                    damFrames = testValue.Value;
+                    frameEnabled = damFrames[0]*6; //Frame to enable the collider
+                    frameDisabled = (damFrames[damFrames.Length - 1] + 1)*6; //Frame to disable the collider
+                    if(frameEnabled <= 0)
+                    { // for testing on active frames that have not been set yet
+                        frameEnabled = 6;
+                    }
+                    if(frameDisabled <= 0)
+                    {
+                        frameDisabled = 12;
+                    }
+                }
+                attacked = true;
+                attInd = i;
+                canAttack = attackTime;
+            }
         }
-        else
-        {
-            lCol.enabled = false;
-        }
+    }
 
-        if (hAtt)
-        {
-            hCol.enabled = true;
-            canAttack = hAttTime;
-            return;
-        }
-        else
-        {
-            hCol.enabled = false;
-        }
-
-        if (spAtt)
-        {
-            spCol.enabled = true;
-            canAttack = spAttTime;
-            return;
-        }
-        else
-        {
-            spCol.enabled = false;
-        }
-
-        if (shAtt)
-        {
-            shCol.enabled = true;
-            canAttack = shAttTime;
-            return;
-        }
-        else
-        {
-            shCol.enabled = false;
-        }
-        */
+    public void OnHit(int attackDamage)
+    {
+        health -= attackDamage;
+        Debug.Log(gameObject.name + " was hit! Health:" + health);
     }
 
     private void normalizeTimers()
@@ -383,4 +402,5 @@ public class PlayerController : MonoBehaviour
             canAttack = -1;
         }
     }
+
 }

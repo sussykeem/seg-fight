@@ -6,6 +6,7 @@ TagManager:
   tags:
   - groundCheck
   - SpawnPoint
+  - MoveHit
   layers:
   - Default
   - TransparentFX

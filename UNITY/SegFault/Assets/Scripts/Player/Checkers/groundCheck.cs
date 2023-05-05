@@ -5,7 +5,7 @@ using UnityEngine;
 public class groundCheck : MonoBehaviour
 {
     public bool onGround = true;
-    public float repelFactor = 4f;
+    public float repelFactor = 1f;
     private Rigidbody2D prb;
     private Transform ptr;
     private void OnCollisionStay2D(Collision2D collision)
@@ -13,7 +13,8 @@ public class groundCheck : MonoBehaviour
         if (collision.gameObject.layer == 3) //Checking if the player is on the ground
         {
             onGround = true;
-        } else if(collision.gameObject.tag == "Player" && onGround == false)
+        }
+        else if (collision.gameObject.tag == "Player" && onGround == false)
         {
             ptr = transform.parent;
             prb = ptr.GetComponent<Rigidbody2D>();
