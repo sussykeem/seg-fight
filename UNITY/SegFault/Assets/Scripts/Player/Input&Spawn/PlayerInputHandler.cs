@@ -10,8 +10,8 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerController playerController;
 
     public int playerC;
-    public int player1 = PlayerPrefs.GetInt("player1");
-    public int player2 = PlayerPrefs.GetInt("player2");
+    public int player1 = 0;
+    public int player2 = 0;
     public int rotPlayer = 0;
 
     Vector2 spawnPos = Vector2.zero;
@@ -21,6 +21,8 @@ public class PlayerInputHandler : MonoBehaviour
     private void Awake()
     {
         playerC = PlayerInputManager.instance.playerCount;
+        player1 = PlayerPrefs.GetInt("player1");
+        player2 = PlayerPrefs.GetInt("player2");
         if (playerPrefab != null)
         {
             if (playerC > 1)
