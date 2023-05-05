@@ -24,6 +24,6 @@ public class PlayerSpawnManageer : MonoBehaviour
     {
         var gamePads = Gamepad.all;
         PlayerInputManager.instance.JoinPlayer(0, -1, controlScheme: "Gamepad", pairWithDevice: gamePads[0]);
-        PlayerInputManager.instance.JoinPlayer(1, -1, controlScheme: "Keyboard", pairWithDevice: Keyboard.current);
+        PlayerInputManager.instance.JoinPlayer(1, -1, controlScheme: "Gamepad", pairWithDevice: gamePads[1]);
     }
 }
