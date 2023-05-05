@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class button_change : MonoBehaviour
 {
     int counter = 0;
-    public Button button_blake, button_randy, button_karim, button_turner, back;
+    public Button button_blake, button_randy, button_karim, button_turner;
     EventSystem EventSystem = EventSystem.current;
 
     public void button_press(Button button) {
@@ -20,6 +20,7 @@ public class button_change : MonoBehaviour
             button_randy.colors = colorVar;
             button_karim.colors = colorVar;
             button_turner.colors = colorVar;
+            PlayerPrefs.SetString("Player 1", button.name);
             counter++;
 
         }
@@ -33,6 +34,7 @@ public class button_change : MonoBehaviour
             button_karim.colors = colorVar;
             button_turner.colors = colorVar;
             counter++;
+            PlayerPrefs.SetString("Player 2", button.name);
             SceneManager.LoadScene("mapSelect");
 
         }

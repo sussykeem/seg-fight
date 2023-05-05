@@ -1036,7 +1036,6 @@ MonoBehaviour:
   button_randy: {fileID: 1589939251}
   button_karim: {fileID: 1245254009}
   button_turner: {fileID: 446608069}
-  back: {fileID: 1739933675}
 --- !u!1 &829155087
 GameObject:
   m_ObjectHideFlags: 0
