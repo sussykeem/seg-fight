@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     private Coroutine moveCo;
     private float collisionTime = 0.25f;
     private float canStopCollide = 0.0f;
+    private float offWall = 0.1f;
 
     //Getting Character Information
     private float health = 100.0f;
@@ -267,7 +268,13 @@ public class PlayerController : MonoBehaviour
             atPos = true;
             canMove = -1;
             canStopCollide -= Time.deltaTime;
-        } 
+        } else if (collision.gameObject.layer == 9)
+        {
+            StopCoroutine(moveCo);
+            atPos = true;
+            var relativePos = (collision.gameObject.transform.position - gameObject.transform.position).normalized.x;
+            gameObject.transform.position = new Vector2(gameObject.transform.position.x + relativePos * offWall, gameObject.transform.position.y);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
