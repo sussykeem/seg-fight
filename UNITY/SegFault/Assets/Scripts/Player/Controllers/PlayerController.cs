@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Timer timerSc;
     
     private Rigidbody2D rb;
+    private Animator anim;
 
     //Horizontal Moving Variables
     public float moveTime = 0.75f;
@@ -76,6 +77,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = Character.GetComponent<Rigidbody2D>();
+        anim = Character.GetComponent<Animator>();
         gcs = groundCheckObj.GetComponent<groundCheck>();
 
         gameTimer = GameObject.FindGameObjectWithTag("Timer");
@@ -120,11 +122,13 @@ public class PlayerController : MonoBehaviour
         if (context.performed && hAtt == false && spAtt == false && shAtt == false)
         {
             lAtt = true;
+            anim.SetBool("light", true);
             attackType[0] = lAtt;
         }
         if (context.canceled)
         {
             lAtt = false;
+            anim.SetBool("light", false); // not good
             attackType[0] = lAtt;
         }
     }
@@ -180,6 +184,7 @@ public class PlayerController : MonoBehaviour
             gameOver = true;
         }
 
+        anim.SetBool("onGround", onGround);
         if(health <= 0)
         { //if a player has been killed
             Debug.Log(gameObject.name + " Died!");
@@ -221,6 +226,7 @@ public class PlayerController : MonoBehaviour
         if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5 && !gameOver) //Character can move if they are not blocking and its been time since the last move
         {
             atPos = false;
+            anim.SetBool("walkF", true);
             HorizMove();
             canMove = moveTime;
         }
@@ -269,6 +275,7 @@ public class PlayerController : MonoBehaviour
         }
         transform.position = targetPos;
         atPos = true;
+        anim.SetBool("walkF", false);
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -277,12 +284,14 @@ public class PlayerController : MonoBehaviour
         { //so players don't jankily pass through each other
             StopCoroutine(moveCo);
             atPos = true;
+            anim.SetBool("walkF", false);
             canMove = -1;
             canStopCollide -= Time.deltaTime;
         } else if (collision.gameObject.layer == 9)
         {
             StopCoroutine(moveCo);
             atPos = true;
+            anim.SetBool("walkF", false);
             var relativePos = (collision.gameObject.transform.position - gameObject.transform.position).normalized.x;
             gameObject.transform.position = new Vector2(gameObject.transform.position.x + relativePos * offWall, gameObject.transform.position.y);
         }
