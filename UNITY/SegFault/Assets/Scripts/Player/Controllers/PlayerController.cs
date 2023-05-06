@@ -120,14 +120,14 @@ public class PlayerController : MonoBehaviour
         if (context.started && hAtt == false && spAtt == false && shAtt == false)
         {
             lAtt = true; 
-            anim.SetBool("light", lAtt);
+            anim.SetBool("light", true);
             attackType[0] = lAtt;
             attack();
         }
         if (context.canceled)
         {
             lAtt = false;
-            anim.SetBool("light", lAtt);
+            anim.SetBool("light", false);
             attackType[0] = lAtt;
         }
     }
@@ -138,11 +138,13 @@ public class PlayerController : MonoBehaviour
         {
             hAtt = true;
             attackType[1] = hAtt;
+            anim.SetBool("heavy", true);
         }
         if (context.canceled)
         {
             hAtt = false;
             attackType[1] = hAtt;
+            anim.SetBool("heavy", false);
         }
     }
 
@@ -152,11 +154,13 @@ public class PlayerController : MonoBehaviour
         {
             spAtt = true;
             attackType[2] = spAtt;
+            anim.SetBool("special", true);
         }
         if (context.canceled)
         {
             spAtt = false;
             attackType[2] = spAtt;
+            anim.SetBool("special", false);
         }
     }
 
@@ -166,11 +170,13 @@ public class PlayerController : MonoBehaviour
         {
             shAtt = true;
             attackType[3] = shAtt;
+            anim.SetBool("gb", true);
         }
         if (context.canceled)
         {
             shAtt = false;
             attackType[3] = shAtt;
+            anim.SetBool("gb", false);
         }
     }
 
