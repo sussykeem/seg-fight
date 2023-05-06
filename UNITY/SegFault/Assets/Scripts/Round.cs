@@ -40,6 +40,10 @@ public class Round : MonoBehaviour
         timerSc = timerObj.GetComponent<Timer>();
 
         gameOverSc = gameObject.GetComponent<GameOver>();
+
+        AudioManager audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Play("Gong");
+        audioManager.Play("Fight Music");
     }
 
     public void FixedUpdate()
@@ -93,6 +97,10 @@ public class Round : MonoBehaviour
         player1.transform.position = spawnPoints[0].transform.position;
         player2.transform.position = spawnPoints[1].transform.position;
         timerSc.timer = timerSc.roundTime;
+
+        AudioManager audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Play("Gong");
+        audioManager.Play("Fight Music");
     }
 
     public void gameWon(GameObject player)
