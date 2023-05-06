@@ -304,7 +304,6 @@ public class PlayerController : MonoBehaviour
         int thisDam;
         bool thisProj;
         string first, second;
-        string[] secondWords, firstWords;
         string path = "Assets/Characters/CharInfo/" + charName + ".txt";
         //Read the text from directly from the test.txt file
         StreamReader reader = new StreamReader(path);
@@ -318,7 +317,7 @@ public class PlayerController : MonoBehaviour
                 thisDam = int.Parse(first);
             } 
             else
-            { //Getting the Damage frames of the move, val for Dictionaries
+            { //Getting if the move is a projectile, val for Dictionaries
                 second = reader.ReadLine();
                 if(int.Parse(second) == 1)
                 { //if there is a 1 in the text file the move is a projectile attack
