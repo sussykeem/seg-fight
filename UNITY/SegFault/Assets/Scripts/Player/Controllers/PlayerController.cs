@@ -62,11 +62,13 @@ public class PlayerController : MonoBehaviour
 
     //Attacking Variables
     private BoxCollider2D[] damageColliders;
-    public bool lAtt, hAtt, spAtt, shAtt , attacked, isProj = false;
+    public bool attacked, isProj = false;
     public bool[] attackType = new bool[4] { false, false, false, false };
     public float attackTime = 1.0f;
     private float canAttack = 0.0f;
-    public int attackPower = 0;
+    public int attackPower, attInd = 0;
+    private string[] attackNames = { "light", "heavy", "special", "gb" };
+    private string attackName = "";
 
     //Getting Hit Variables
     public bool isHit, gameOver = false;
@@ -117,66 +119,53 @@ public class PlayerController : MonoBehaviour
 
     public void OnLAtt(InputAction.CallbackContext context)
     { // Get light attack value
-        if (context.started && hAtt == false && spAtt == false && shAtt == false)
+        if (context.started && attackType[1] == false && attackType[2] == false && attackType[3] == false)
         {
-            lAtt = true; 
-            anim.SetBool("light", lAtt);
-            attackType[0] = lAtt;
-            attack();
-        }
-        if (context.canceled)
-        {
-            lAtt = false;
-            anim.SetBool("light", lAtt);
-            attackType[0] = lAtt;
+            attInd = 0;
+            attackType[attInd] = true;
         }
     }
 
     public void OnHAtt(InputAction.CallbackContext context)
     { // Get heavy attack value
-        if (context.started && lAtt == false && spAtt == false && shAtt == false)
+        if (context.started && attackType[0] == false && attackType[2] == false && attackType[3] == false)
         {
-            hAtt = true;
-            attackType[1] = hAtt;
-        }
-        if (context.canceled)
-        {
-            hAtt = false;
-            attackType[1] = hAtt;
+            attInd = 1;
+            attackType[attInd] = true;
         }
     }
 
     public void OnSpAtt(InputAction.CallbackContext context)
     { // Get special attack value
-        if (context.started && hAtt == false && lAtt == false && shAtt == false)
+        if (context.started && attackType[0] == false && attackType[1] == false && attackType[3] == false)
         {
-            spAtt = true;
-            attackType[2] = spAtt;
-        }
-        if (context.canceled)
-        {
-            spAtt = false;
-            attackType[2] = spAtt;
+            attInd = 2;
+            attackType[attInd] = true;
         }
     }
 
     public void OnShAtt(InputAction.CallbackContext context)
     { // Get sheild break value
-        if (context.started && hAtt == false && spAtt == false && lAtt == false)
+        if (context.started && attackType[0] == false && attackType[1] == false && attackType[2] == false)
         {
-            shAtt = true;
-            attackType[3] = shAtt;
-        }
-        if (context.canceled)
-        {
-            shAtt = false;
-            attackType[3] = shAtt;
+            attInd = 3;
+            attackType[attInd] = true;
         }
     }
 
     private void FixedUpdate()
     {
         onGround = gcs.onGround;
+
+        if (attacked)
+        { //if the player did an attack
+            if(canAttack <= 0)
+            { //do the attack until the animation time has ran
+                anim.SetBool(attackName, false);
+                attackType[attInd] = false;
+                attacked = false;
+            }
+        }
 
         if(timerSc.toScreenInt <= 0)
         { //Ends the game if time is up
@@ -202,7 +191,7 @@ public class PlayerController : MonoBehaviour
             canAttack -= Time.deltaTime;
         }
 
-        if(MoveDir.y <= blockThreshold && !gameOver) //Character is blocking if they are holding down
+        if(MoveDir.y <= blockThreshold && !gameOver && !attacked) //Character is blocking if they are holding down
         {
             isBlock = true;
             anim.SetBool("block", true);
@@ -211,14 +200,14 @@ public class PlayerController : MonoBehaviour
             isBlock = false;
             anim.SetBool("block", false);
         }
-        if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5 && !gameOver) //Character can move if they are not blocking and its been time since the last move
+        if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5 && !gameOver && attacked == false) //Character can move if they are not blocking and its been time since the last move
         {
             atPos = false;
             anim.SetBool("walkF", true);
             HorizMove();
             canMove = moveTime;
         }
-        if (onGround && MoveDir.y >= 0.5 && atPos == true && canJump <= 0.0f && !gameOver) //Character can jump if they are on the ground and pressing up
+        if (onGround && MoveDir.y >= 0.5 && atPos == true && canJump <= 0.0f && !gameOver && !attacked) //Character can jump if they are on the ground and pressing up
         {
             var curForce = jumpForce - vertDamper * MoveDir.y;
             jumpMoveDir = MoveDir.normalized;
@@ -232,7 +221,7 @@ public class PlayerController : MonoBehaviour
             rotChar();
         }
 
-        if(onGround && canAttack <= 0 && !gameOver)
+        if (onGround && !gameOver && attacked == false && atPos == true)
         { //Can attack if you are on the ground and so much time has passed since the last attack
             attack();
         }
@@ -359,12 +348,15 @@ public class PlayerController : MonoBehaviour
         {
             if (attackType[i] == true)
             {
-                foreach (var testValue in moveContainer[i])
+                foreach (var testValue in moveContainer[attInd])
                 {
                     attackPower = testValue.Key;
                     isProj = testValue.Value;
                 }
                 attacked = true;
+                attackName = attackNames[i];
+                anim.SetBool(attackName, true);
+                attackTime = anim.GetCurrentAnimatorStateInfo(0).length/2;
                 canAttack = attackTime;
             }
         }

@@ -47,11 +47,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Light Attack"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""2c0a6caa-8419-4336-bb4c-a990a3d7766d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Tap"",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
                 },
                 {
