@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
 
     private GameObject [] players;
     public GameObject otherPlayer;
+
+    private GameObject gameTimer;
+    private Timer timerSc;
     
     private Rigidbody2D rb;
 
@@ -74,7 +77,10 @@ public class PlayerController : MonoBehaviour
     {
         rb = Character.GetComponent<Rigidbody2D>();
         gcs = groundCheckObj.GetComponent<groundCheck>();
-       
+
+        gameTimer = GameObject.FindGameObjectWithTag("Timer");
+        timerSc = gameTimer.GetComponent<Timer>();
+
         damageColliders = gameObject.GetComponentsInChildren<BoxCollider2D>();
         canStopCollide = collisionTime;
 
@@ -168,6 +174,11 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         onGround = gcs.onGround;
+
+        if(timerSc.toScreenInt <= 0)
+        { //Ends the game if time is up
+            gameOver = true;
+        }
 
         if(health <= 0)
         { //if a player has been killed

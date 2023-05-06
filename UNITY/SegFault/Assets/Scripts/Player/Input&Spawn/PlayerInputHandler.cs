@@ -9,6 +9,9 @@ public class PlayerInputHandler : MonoBehaviour
     private GameObject playerOb;
     private PlayerController playerController;
 
+    private GameObject pauseManager;
+    private Pause pauseSc;
+
     public int playerC;
     public int player1 = 0;
     public int player2 = 0;
@@ -20,6 +23,9 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Awake()
     {
+        pauseManager = GameObject.FindGameObjectWithTag("Pause");
+        pauseSc = pauseManager.GetComponent<Pause>();
+
         playerC = PlayerInputManager.instance.playerCount;
         player1 = PlayerPrefs.GetInt("player1");
         player2 = PlayerPrefs.GetInt("player2");
@@ -27,7 +33,6 @@ public class PlayerInputHandler : MonoBehaviour
         {
             if (playerC > 1)
             { //Player 2
-                player2 = 1;
                 playerOb = playerPrefab[player2];
                 eulerRot = playerPrefab[player2].transform.rotation.eulerAngles;
                 rotPlayer = 180;
@@ -35,7 +40,6 @@ public class PlayerInputHandler : MonoBehaviour
             }
             else
             { //Player 1
-                player2 = 2;
                 playerOb = playerPrefab[player1];
                 eulerRot = playerPrefab[player1].transform.rotation.eulerAngles;
                 spawnPos = PlayerSpawnManageer.instance.spawnPoints[0].transform.position;
@@ -70,6 +74,14 @@ public class PlayerInputHandler : MonoBehaviour
     public void OnSpAtt(InputAction.CallbackContext context)
     { //Handles player special attack
         playerController.OnSpAtt(context);
+    }
+
+    public void OnPause(InputAction.CallbackContext context)
+    { //Pause the game
+        if (context.performed)
+        {
+            pauseSc.onPause();
+        }
     }
 }
 

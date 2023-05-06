@@ -142,6 +142,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3d4e99f8-a02c-465c-ade2-275ec9095ece
     m_ActionName: Gameplay/Shield Break[/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1214040755047706869}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnPause
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ba41c8fd-035e-4872-b391-7d7ee176c39a
+    m_ActionName: Gameplay/Pause[/XInputControllerWindows/start,/Keyboard/enter]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Gameplay
@@ -165,5 +181,6 @@ MonoBehaviour:
   - {fileID: 1350002914369462526, guid: 012edffdb0eec504e8715a477ed76ef8, type: 3}
   - {fileID: 6513615711942053582, guid: e654bc4836dd9954d81e4aa390841f70, type: 3}
   playerC: 0
-  player: 0
+  player1: 0
+  player2: 0
   rotPlayer: 0
