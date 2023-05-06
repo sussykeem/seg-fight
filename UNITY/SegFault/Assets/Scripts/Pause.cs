@@ -22,6 +22,9 @@ public class Pause : MonoBehaviour
     public void onHome(int sceneId)
     {
         Time.timeScale = 1f;
+        AudioManager audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Stop("Fight Music");
+        audioManager.Play("Menu Music");
         SceneManager.LoadScene(sceneId);
     }
 }

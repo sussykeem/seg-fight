@@ -26,6 +26,9 @@ public class GameOver : MonoBehaviour
     }
     public void onHome(int sceneId)
     {
+        AudioManager audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Stop("Fight Music");
+        audioManager.Play("Menu Music");
         Time.timeScale = 1f;
         SceneManager.LoadScene(sceneId);
     }
