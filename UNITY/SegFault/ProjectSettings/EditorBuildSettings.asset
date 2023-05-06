@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: 
     guid: e74f413a05d3bd34ca02abb319396ea2
   - enabled: 1
-    path: Assets/Scenes/Arena's/Cemetary.unity
+    path: Assets/Scenes/Arena's/Mountain.unity
     guid: 29176623ebd624d47bf5de5e69c8d5b7
   - enabled: 1
     path: Assets/Scenes/charSelect.unity
@@ -29,5 +29,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Arena's/Depths.unity
     guid: 407214ccbe22f124ba968e2536f50bfa
+  - enabled: 1
+    path: Assets/Scenes/Arena's/Cemetary.unity
+    guid: 3b07f1416694c8145aea82abde26cd1e
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 6c4f367daa564443596a3fd57fe02516, type: 2}

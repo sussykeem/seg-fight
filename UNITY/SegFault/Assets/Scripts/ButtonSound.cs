@@ -16,4 +16,10 @@ public class ButtonSound : MonoBehaviour
         audioManager = FindObjectOfType<AudioManager>();
         audioManager.Play("Bloop");
     }
+
+    public void EndMusic(string song)
+    {
+        audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Stop(song);
+    }
 }

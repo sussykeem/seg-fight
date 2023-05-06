@@ -61,16 +61,24 @@ public class PlayerController : MonoBehaviour
     //the value int array contains the damaging frames of the move
 
     //Attacking Variables
-    private BoxCollider2D[] damageColliders;
-    public bool lAtt, hAtt, spAtt, shAtt , attacked, isProj = false;
+    public bool attacked, isProj = false;
     public bool[] attackType = new bool[4] { false, false, false, false };
     public float attackTime = 1.0f;
     private float canAttack = 0.0f;
-    public int attackPower = 0;
+    public int attackPower, attInd = 0;
+    private string[] attackNames = { "light", "heavy", "special", "gb" };
+    private string attackName = "";
 
     //Getting Hit Variables
-    public bool isHit, gameOver = false;
+    public bool isHit = false;
     public float blockPadding = 0.5f;
+
+    //Round Variables
+    public bool gameOver, playerWon = false;
+    public int numWins = 0;
+    private int roundNum = 1;
+    private GameObject roundObj;
+    private Round roundSc;
 
     private void Awake()
     {
@@ -81,7 +89,9 @@ public class PlayerController : MonoBehaviour
         gameTimer = GameObject.FindGameObjectWithTag("Timer");
         timerSc = gameTimer.GetComponent<Timer>();
 
-        damageColliders = gameObject.GetComponentsInChildren<BoxCollider2D>();
+        roundObj = GameObject.FindGameObjectWithTag("Round");
+        roundSc = roundObj.GetComponent<Round>();
+
         canStopCollide = collisionTime;
 
         charName = Character.name;
@@ -117,89 +127,58 @@ public class PlayerController : MonoBehaviour
 
     public void OnLAtt(InputAction.CallbackContext context)
     { // Get light attack value
-        if (context.started && hAtt == false && spAtt == false && shAtt == false)
+        if (context.started && attackType[1] == false && attackType[2] == false && attackType[3] == false)
         {
-            lAtt = true; 
-            anim.SetBool("light", true);
-            attackType[0] = lAtt;
-            attack();
-        }
-        if (context.canceled)
-        {
-            lAtt = false;
-            anim.SetBool("light", false);
-            attackType[0] = lAtt;
+            attInd = 0;
+            attackType[attInd] = true;
         }
     }
 
     public void OnHAtt(InputAction.CallbackContext context)
     { // Get heavy attack value
-        if (context.started && lAtt == false && spAtt == false && shAtt == false)
+        if (context.started && attackType[0] == false && attackType[2] == false && attackType[3] == false)
         {
-            hAtt = true;
-            attackType[1] = hAtt;
-            anim.SetBool("heavy", true);
-        }
-        if (context.canceled)
-        {
-            hAtt = false;
-            attackType[1] = hAtt;
-            anim.SetBool("heavy", false);
+            attInd = 1;
+            attackType[attInd] = true;
         }
     }
 
     public void OnSpAtt(InputAction.CallbackContext context)
     { // Get special attack value
-        if (context.started && hAtt == false && lAtt == false && shAtt == false)
+        if (context.started && attackType[0] == false && attackType[1] == false && attackType[3] == false)
         {
-            spAtt = true;
-            attackType[2] = spAtt;
-            anim.SetBool("special", true);
-        }
-        if (context.canceled)
-        {
-            spAtt = false;
-            attackType[2] = spAtt;
-            anim.SetBool("special", false);
+            attInd = 2;
+            attackType[attInd] = true;
         }
     }
 
     public void OnShAtt(InputAction.CallbackContext context)
     { // Get sheild break value
-        if (context.started && hAtt == false && spAtt == false && lAtt == false)
+        if (context.started && attackType[0] == false && attackType[1] == false && attackType[2] == false)
         {
-            shAtt = true;
-            attackType[3] = shAtt;
-            anim.SetBool("gb", true);
-        }
-        if (context.canceled)
-        {
-            shAtt = false;
-            attackType[3] = shAtt;
-            anim.SetBool("gb", false);
+            attInd = 3;
+            attackType[attInd] = true;
         }
     }
 
     private void FixedUpdate()
     {
+        playerWins();
+        roundOver();
+
         onGround = gcs.onGround;
 
-        if(timerSc.toScreenInt <= 0)
-        { //Ends the game if time is up
-            gameOver = true;
+        if (attacked)
+        { //if the player did an attack
+            if(canAttack <= 0)
+            { //do the attack until the animation time has ran
+                anim.SetBool(attackName, false);
+                attackType[attInd] = false;
+                attacked = false;
+            }
         }
 
         anim.SetBool("onGround", onGround);
-        if(health <= 0)
-        { //if a player has been killed
-            Debug.Log(gameObject.name + " Died!");
-            gameObject.SetActive(false);
-        }
-
-        if (!otherPlayer.activeSelf)
-        { // if the other player has been killed
-            gameOver = true;
-        }
 
         if (onGround){ //if on ground count down to when they can jump and move on the ground
             canMove -= Time.deltaTime;
@@ -208,7 +187,7 @@ public class PlayerController : MonoBehaviour
             canAttack -= Time.deltaTime;
         }
 
-        if(MoveDir.y <= blockThreshold && !gameOver) //Character is blocking if they are holding down
+        if(MoveDir.y <= blockThreshold && !gameOver && !attacked) //Character is blocking if they are holding down
         {
             isBlock = true;
             anim.SetBool("block", true);
@@ -217,14 +196,14 @@ public class PlayerController : MonoBehaviour
             isBlock = false;
             anim.SetBool("block", false);
         }
-        if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5 && !gameOver) //Character can move if they are not blocking and its been time since the last move
+        if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5 && !gameOver && attacked == false) //Character can move if they are not blocking and its been time since the last move
         {
             atPos = false;
             anim.SetBool("walkF", true);
             HorizMove();
             canMove = moveTime;
         }
-        if (onGround && MoveDir.y >= 0.5 && atPos == true && canJump <= 0.0f && !gameOver) //Character can jump if they are on the ground and pressing up
+        if (onGround && MoveDir.y >= 0.5 && atPos == true && canJump <= 0.0f && !gameOver && !attacked) //Character can jump if they are on the ground and pressing up
         {
             var curForce = jumpForce - vertDamper * MoveDir.y;
             jumpMoveDir = MoveDir.normalized;
@@ -238,7 +217,7 @@ public class PlayerController : MonoBehaviour
             rotChar();
         }
 
-        if(onGround && canAttack <= 0 && !gameOver)
+        if (onGround && !gameOver && attacked == false && atPos == true)
         { //Can attack if you are on the ground and so much time has passed since the last attack
             attack();
         }
@@ -303,7 +282,7 @@ public class PlayerController : MonoBehaviour
     {
         int counter = 1;
         int moveNum = 0;
-        int thisDam;
+        int thisDam = 0;
         bool thisProj;
         string first, second;
         string path = "Assets/Characters/CharInfo/" + charName + ".txt";
@@ -311,7 +290,6 @@ public class PlayerController : MonoBehaviour
         StreamReader reader = new StreamReader(path);
         while (!reader.EndOfStream)
         {
-            thisDam = 0;
             thisProj = false;
             if (counter % 2 != 0)
             { //Getting Damage of move, key for Dictionaries
@@ -371,6 +349,9 @@ public class PlayerController : MonoBehaviour
                     isProj = testValue.Value;
                 }
                 attacked = true;
+                attackName = attackNames[i];
+                anim.SetBool(attackName, true);
+                attackTime = anim.GetCurrentAnimatorStateInfo(0).length/2;
                 canAttack = attackTime;
             }
         }
@@ -385,6 +366,47 @@ public class PlayerController : MonoBehaviour
         health -= attackDamage;
         isHit = true;
         Debug.Log(gameObject.name + " was hit! Health:" + health);
+    }
+
+    private void roundOver()
+    {
+        roundNum = roundSc.roundNum;
+        if (!playerWon && !otherPlayer.GetComponent<PlayerController>().playerWon)
+        { //neither player has won the whole game
+            if (timerSc.toScreenInt <= 0)
+            { //Endsd the round if the timer is up
+                roundSc.roundChange();
+            }
+            if (playerWon)
+            { //if a player won the round
+                roundSc.roundChange();
+            }
+        } else
+        { // A player has won the whole game and the game should end
+            endGame();
+        }
+    }
+
+    private void playerWins()
+    { //checking who won the round
+        if (health <= 0)
+        { //if a player has been killed
+            Debug.Log(gameObject.name + " Died!");
+            gameObject.SetActive(false);
+        }
+        if (!otherPlayer.activeSelf)
+        { // if the other player has been killed
+            numWins++;
+        }
+        if (numWins == 2)
+        {
+            playerWon = true;
+        }
+    }
+
+    private void endGame()
+    {
+        Time.timeScale = 0;
     }
 
     private void normalizeTimers()

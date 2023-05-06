@@ -39,12 +39,31 @@ public class AudioManager : MonoBehaviour
         float volume = PlayerPrefs.GetFloat("Volume");
         mixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20 );
         AudioListener.volume = volume;
-        Play("Menu Music");
+        Play(sounds[0].name);
     }
 
     public void Play(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
-        s.source.Play();
+        if (!(s.source.isPlaying)) {
+            s.source.Play();
+        }
+        else
+        {
+            s.source.Stop();
+            s.source.Play();
+        }
+    }
+
+ /*   public void PlayOnce(string name)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        s.source.PlayOneShot(s.clip);
+    }*/
+
+    public void Stop(string name)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        s.source.Stop();
     }
 }
