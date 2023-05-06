@@ -33,7 +33,6 @@ public class PlayerInputHandler : MonoBehaviour
         {
             if (playerC > 1)
             { //Player 2
-                player2 = 0;
                 playerOb = playerPrefab[player2];
                 eulerRot = playerPrefab[player2].transform.rotation.eulerAngles;
                 rotPlayer = 180;
@@ -41,7 +40,6 @@ public class PlayerInputHandler : MonoBehaviour
             }
             else
             { //Player 1
-                player1 = 2;
                 playerOb = playerPrefab[player1];
                 eulerRot = playerPrefab[player1].transform.rotation.eulerAngles;
                 spawnPos = PlayerSpawnManageer.instance.spawnPoints[0].transform.position;
@@ -79,10 +77,13 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     public void OnPause(InputAction.CallbackContext context)
-    { //Pause the game
-        if (context.performed)
-        {
+    { //Pause Menu input
+        if (context.performed && !pauseSc.pauseMenu.activeSelf)
+        { //Pause game
             pauseSc.onPause();
+        } else if(context.performed && pauseSc.pauseMenu.activeSelf)
+        { //Resume Game
+            pauseSc.onResume();
         }
     }
 }
