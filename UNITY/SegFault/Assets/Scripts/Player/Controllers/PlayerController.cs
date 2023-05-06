@@ -39,7 +39,9 @@ public class PlayerController : MonoBehaviour
 
     //Blocking Variables
     public bool isBlock = false;
-    public float blockThreshold = -0.5f;
+    private float blockThreshold = -0.5f;
+    private float blockStaggerTimer = 2.0f;
+    private float blockStagger = 0.0f;
 
     //Relative Pos, for flipping sprites, to face each other
     private bool flipped = false;
@@ -74,7 +76,7 @@ public class PlayerController : MonoBehaviour
     public float blockPadding = 0.5f;
 
     //Round Variables
-    public bool gameOver, playerWon = false;
+    public bool playerWon = false;
     public int numWins = 0;
 
     private void Awake()
@@ -161,6 +163,17 @@ public class PlayerController : MonoBehaviour
 
         onGround = gcs.onGround;
 
+        anim.SetBool("onGround", onGround);
+
+        if (onGround)
+        { //if on ground count down to when they can jump and move on the ground
+            canMove -= Time.deltaTime;
+            canJump -= Time.deltaTime;
+            canFlip -= Time.deltaTime;
+            canAttack -= Time.deltaTime;
+            blockStagger -= Time.deltaTime;
+        }
+
         if (attacked)
         { //if the player did an attack
             if(canAttack <= 0)
@@ -171,32 +184,31 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        anim.SetBool("onGround", onGround);
-
-        if (onGround){ //if on ground count down to when they can jump and move on the ground
-            canMove -= Time.deltaTime;
-            canJump -= Time.deltaTime;
-            canFlip -= Time.deltaTime;
-            canAttack -= Time.deltaTime;
-        }
-
-        if(MoveDir.y <= blockThreshold && !gameOver && !attacked) //Character is blocking if they are holding down
-        {
+        if (MoveDir.y <= blockThreshold && blockStagger <= 0)
+        { //Character is trying to block if they are holding down and they are not staggered from a shield break
             isBlock = true;
-            anim.SetBool("block", true);
         } else
         {
             isBlock = false;
+        }
+
+        
+        if(!attacked && isBlock) //Character is blocking if they are holding down and are not staggered and not attacking
+        {
+            anim.SetBool("block", true);
+        } else
+        {
             anim.SetBool("block", false);
         }
-        if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5 && !gameOver && attacked == false) //Character can move if they are not blocking and its been time since the last move
+
+        if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5  && !attacked && blockStagger <= 0) //Character can move if they are not blocking and its been time since the last move
         {
             atPos = false;
             anim.SetBool("walkF", true);
             HorizMove();
             canMove = moveTime;
         }
-        if (onGround && MoveDir.y >= 0.5 && atPos == true && canJump <= 0.0f && !gameOver && !attacked) //Character can jump if they are on the ground and pressing up
+        if (onGround && MoveDir.y >= 0.5 && atPos == true && canJump <= 0.0f && !attacked && blockStagger <= 0) //Character can jump if they are on the ground and pressing up
         {
             var curForce = jumpForce - vertDamper * MoveDir.y;
             jumpMoveDir = MoveDir.normalized;
@@ -205,12 +217,12 @@ public class PlayerController : MonoBehaviour
             canJump = jumpTime;
         }
 
-        if (onGround && otherPlayer.GetComponent<PlayerController>().onGround && canFlip <= 0)
+        if (onGround && otherPlayer.GetComponent<PlayerController>().onGround && canFlip <= 0 && blockStagger <= 0)
         {
             rotChar();
         }
 
-        if (onGround && !gameOver && attacked == false && atPos == true)
+        if (onGround && !attacked && atPos && blockStagger <= 0)
         { //Can attack if you are on the ground and so much time has passed since the last attack
             attack();
         }
@@ -254,7 +266,7 @@ public class PlayerController : MonoBehaviour
             canMove = -1;
             canStopCollide -= Time.deltaTime;
         } else if (collision.gameObject.layer == 9 && !atPos)
-        {
+        { //so players can't move through a wall
             StopCoroutine(moveCo);
             atPos = true;
             anim.SetBool("walkF", false);
@@ -350,11 +362,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnHit(float attackDamage)
+    public void OnHit(float attackDamage, int moveInd)
     { // what happens when hit
-        if (isBlock)
+        if (isBlock && moveInd != 3)
         {
             attackDamage -= attackDamage*blockPadding;
+        } else if (isBlock && moveInd == 3)
+        {
+            attackDamage -= attackDamage * blockPadding;
+            blockStagger = blockStaggerTimer;
+            isBlock = false;
         }
         health -= attackDamage;
         isHit = true;
@@ -386,6 +403,10 @@ public class PlayerController : MonoBehaviour
         if (canAttack < -1)
         {
             canAttack = -1;
+        }
+        if (blockStagger < -1)
+        {
+            blockStagger = -1;
         }
     }
 
