@@ -62,13 +62,11 @@ public class PlayerController : MonoBehaviour
 
     //Attacking Variables
     private BoxCollider2D[] damageColliders;
-    public bool lAtt, hAtt, spAtt, shAtt , attacked, projAtt= false;
+    public bool lAtt, hAtt, spAtt, shAtt , attacked, isProj = false;
     public bool[] attackType = new bool[4] { false, false, false, false };
     public float attackTime = 1.0f;
     private float canAttack = 0.0f;
-    private int frameCounter, frameEnabled, frameDisabled, attInd = 0;
     public int attackPower = 0;
-    private bool isProj = false;
 
     //Getting Hit Variables
     public bool isHit, gameOver = false;
@@ -119,23 +117,24 @@ public class PlayerController : MonoBehaviour
 
     public void OnLAtt(InputAction.CallbackContext context)
     { // Get light attack value
-        if (context.performed && hAtt == false && spAtt == false && shAtt == false)
+        if (context.started && hAtt == false && spAtt == false && shAtt == false)
         {
-            lAtt = true;
-            anim.SetBool("light", true);
+            lAtt = true; 
+            anim.SetBool("light", lAtt);
             attackType[0] = lAtt;
+            attack();
         }
         if (context.canceled)
         {
             lAtt = false;
-            anim.SetBool("light", false); // not good
+            anim.SetBool("light", lAtt);
             attackType[0] = lAtt;
         }
     }
 
     public void OnHAtt(InputAction.CallbackContext context)
     { // Get heavy attack value
-        if (context.performed && lAtt == false && spAtt == false && shAtt == false)
+        if (context.started && lAtt == false && spAtt == false && shAtt == false)
         {
             hAtt = true;
             attackType[1] = hAtt;
@@ -149,7 +148,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnSpAtt(InputAction.CallbackContext context)
     { // Get special attack value
-        if (context.performed && hAtt == false && lAtt == false && shAtt == false)
+        if (context.started && hAtt == false && lAtt == false && shAtt == false)
         {
             spAtt = true;
             attackType[2] = spAtt;
@@ -163,7 +162,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnShAtt(InputAction.CallbackContext context)
     { // Get sheild break value
-        if (context.performed && hAtt == false && spAtt == false && lAtt == false)
+        if (context.started && hAtt == false && spAtt == false && lAtt == false)
         {
             shAtt = true;
             attackType[3] = shAtt;
@@ -194,11 +193,6 @@ public class PlayerController : MonoBehaviour
         if (!otherPlayer.activeSelf)
         { // if the other player has been killed
             gameOver = true;
-        }
-
-        if (attacked)
-        {
-           
         }
 
         if (onGround){ //if on ground count down to when they can jump and move on the ground
@@ -365,13 +359,12 @@ public class PlayerController : MonoBehaviour
         {
             if (attackType[i] == true)
             {
-                foreach (var testValue in moveContainer[attInd])
+                foreach (var testValue in moveContainer[i])
                 {
                     attackPower = testValue.Key;
                     isProj = testValue.Value;
                 }
                 attacked = true;
-                attInd = i;
                 canAttack = attackTime;
             }
         }
