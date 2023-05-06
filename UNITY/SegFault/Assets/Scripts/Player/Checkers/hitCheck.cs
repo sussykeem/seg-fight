@@ -14,7 +14,7 @@ public class hitCheck : MonoBehaviour
     {
         if (collision.gameObject.tag == "MoveHit")
         { //The collision was with the other player's hitbox
-            playerController.GetComponent<PlayerController>().OnHit(playerController.otherPlayer.GetComponent<PlayerController>().attackPower);
+            playerController.GetComponent<PlayerController>().OnHit(playerController.otherPlayer.GetComponent<PlayerController>().attackPower, playerController.otherPlayer.GetComponent<PlayerController>().attInd);
         }
     }
 }
