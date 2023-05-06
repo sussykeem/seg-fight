@@ -246,14 +246,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.name == otherPlayer.name && canStopCollide > 0)
+        if (collision.gameObject.name == otherPlayer.name && canStopCollide > 0 && !atPos)
         { //so players don't jankily pass through each other
             StopCoroutine(moveCo);
             atPos = true;
             anim.SetBool("walkF", false);
             canMove = -1;
             canStopCollide -= Time.deltaTime;
-        } else if (collision.gameObject.layer == 9)
+        } else if (collision.gameObject.layer == 9 && !atPos)
         {
             StopCoroutine(moveCo);
             atPos = true;
@@ -358,25 +358,15 @@ public class PlayerController : MonoBehaviour
         }
         health -= attackDamage;
         isHit = true;
-        Debug.Log(gameObject.name + " was hit! Health:" + health);
     }
 
     private void playerWins()
     { //checking who won the round
-        if (health <= 0)
-        { //if a player has been killed
-            Debug.Log(gameObject.name + " Died!");
-        }
         if (otherPlayer.GetComponent<PlayerController>().health <= 0)
         { // if the other player has been killed
             numWins++;
             playerWon = true;
         }
-    }
-
-    private void endGame()
-    {
-        Time.timeScale = 0;
     }
 
     private void normalizeTimers()

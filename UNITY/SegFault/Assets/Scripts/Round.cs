@@ -14,6 +14,8 @@ public class Round : MonoBehaviour
     public GameObject playerManager;
     private PlayerSpawnManageer playerManagerSc;
 
+    private GameOver gameOverSc;
+
     public GameObject timerObj;
     private Timer timerSc;
     private float timer = 0.0f; 
@@ -36,6 +38,8 @@ public class Round : MonoBehaviour
         spawnPoints = playerManagerSc.spawnPoints;
 
         timerSc = timerObj.GetComponent<Timer>();
+
+        gameOverSc = gameObject.GetComponent<GameOver>();
     }
 
     public void FixedUpdate()
@@ -74,6 +78,9 @@ public class Round : MonoBehaviour
             case 3:
                 roundString = "III";
                 break;
+            case 4:
+                gameTie();
+                break;
             default:
                 roundString = "I";
                 break;
@@ -82,15 +89,19 @@ public class Round : MonoBehaviour
         playerController1.health = 100f;
         playerController2.health = 100f;
         playerController1.playerWon = false;
-        playerController1.playerWon = false;
+        playerController2.playerWon = false;
         player1.transform.position = spawnPoints[0].transform.position;
         player2.transform.position = spawnPoints[1].transform.position;
         timerSc.timer = timerSc.roundTime;
     }
 
     public void gameWon(GameObject player)
-    {
-        Time.timeScale = 0;
-        Debug.Log(player.name);
+    { //A player has won the game
+        gameOverSc.onGameOver(player);
+    }
+
+    public void gameTie()
+    { //If the game ended in a tie
+        gameOverSc.onGameTie();
     }
 }

@@ -105,7 +105,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1095152723927232140}
   - component: {fileID: 7828368595303871412}
-  - component: {fileID: 3526602043789462196}
   m_Layer: 0
   m_Name: ShHit
   m_TagString: MoveHit
@@ -173,20 +172,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.3733697, y: 1.7193841}
   m_EdgeRadius: 0
---- !u!114 &3526602043789462196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639263650835400388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86e86fb1c23de0644b055b15c7365191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yesAttack: 0
-  attackPower: 0
 --- !u!1 &1080449238142802151
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +182,6 @@ GameObject:
   m_Component:
   - component: {fileID: 806222083163253477}
   - component: {fileID: 8590596224272601889}
-  - component: {fileID: 3282553568744447735}
   m_Layer: 0
   m_Name: HeavyHit
   m_TagString: MoveHit
@@ -265,20 +249,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.177174, y: 1.359692}
   m_EdgeRadius: 0
---- !u!114 &3282553568744447735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1080449238142802151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86e86fb1c23de0644b055b15c7365191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yesAttack: 0
-  attackPower: 0
 --- !u!1 &2764508117882646211
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,13 +381,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Character: {fileID: 2764508117882646211}
-  charName: 
   otherPlayer: {fileID: 0}
-  canMove: 0
-  gMoveSpeed: 25
-  aMoveSpeed: 35
-  curMoveSpeed: 0
   moveTime: 1
+  canMove: 0
   moveDist: 3
   atPos: 1
   MoveDir: {x: 0, y: 0}
@@ -430,32 +396,18 @@ MonoBehaviour:
   groundCheckObj: {fileID: 236740259791381958}
   isBlock: 0
   blockThreshold: -0.5
-  flipped: 0
-  flipTime: 1
-  canFlip: 0
-  flipSwap: 1
   health: 100
-  damageColliders: []
-  attackScript: {fileID: 0}
-  lAtt: 0
-  hAtt: 0
-  spAtt: 0
-  shAtt: 0
   attacked: 0
+  isProj: 0
   attackType: 00000000
-  lAttTime: 0
-  hAttTime: 0
-  spAttTime: 0
-  shAttTime: 0
   attackTime: 1
-  canAttack: 0
   attackPower: 0
-  damFrames: 
-  frameCounter: 0
-  frameEnabled: 0
-  frameDisabled: 0
   attInd: 0
   isHit: 0
+  blockPadding: 0.5
+  gameOver: 0
+  playerWon: 0
+  numWins: 0
 --- !u!1 &4084830662949641834
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,7 +418,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4603858323308463510}
   - component: {fileID: 887567657853965883}
-  - component: {fileID: 6198068824631545347}
   m_Layer: 0
   m_Name: LightHit
   m_TagString: MoveHit
@@ -534,20 +485,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.083766, y: 0.63701266}
   m_EdgeRadius: 0
---- !u!114 &6198068824631545347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4084830662949641834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86e86fb1c23de0644b055b15c7365191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yesAttack: 0
-  attackPower: 0
 --- !u!1 &5591334334216565223
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,7 +495,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2593467175479036514}
   - component: {fileID: 5566868069552938501}
-  - component: {fileID: 4747977927637532252}
   m_Layer: 0
   m_Name: SpHit
   m_TagString: MoveHit
@@ -626,20 +562,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.087409, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4747977927637532252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5591334334216565223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86e86fb1c23de0644b055b15c7365191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yesAttack: 0
-  attackPower: 0
 --- !u!1 &6819693251381830236
 GameObject:
   m_ObjectHideFlags: 0
