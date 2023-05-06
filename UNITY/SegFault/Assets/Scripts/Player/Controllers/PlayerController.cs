@@ -61,7 +61,6 @@ public class PlayerController : MonoBehaviour
     //the value int array contains the damaging frames of the move
 
     //Attacking Variables
-    private BoxCollider2D[] damageColliders;
     public bool attacked, isProj = false;
     public bool[] attackType = new bool[4] { false, false, false, false };
     public float attackTime = 1.0f;
@@ -71,8 +70,15 @@ public class PlayerController : MonoBehaviour
     private string attackName = "";
 
     //Getting Hit Variables
-    public bool isHit, gameOver = false;
+    public bool isHit = false;
     public float blockPadding = 0.5f;
+
+    //Round Variables
+    public bool gameOver, playerWon = false;
+    public int numWins = 0;
+    private int roundNum = 1;
+    private GameObject roundObj;
+    private Round roundSc;
 
     private void Awake()
     {
@@ -83,7 +89,9 @@ public class PlayerController : MonoBehaviour
         gameTimer = GameObject.FindGameObjectWithTag("Timer");
         timerSc = gameTimer.GetComponent<Timer>();
 
-        damageColliders = gameObject.GetComponentsInChildren<BoxCollider2D>();
+        roundObj = GameObject.FindGameObjectWithTag("Round");
+        roundSc = roundObj.GetComponent<Round>();
+
         canStopCollide = collisionTime;
 
         charName = Character.name;
@@ -155,6 +163,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        playerWins();
+        roundOver();
+
         onGround = gcs.onGround;
 
         if (attacked)
@@ -167,22 +178,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(timerSc.toScreenInt <= 0)
-        { //Ends the game if time is up
-            gameOver = true;
-        }
-
         anim.SetBool("onGround", onGround);
-        if(health <= 0)
-        { //if a player has been killed
-            Debug.Log(gameObject.name + " Died!");
-            gameObject.SetActive(false);
-        }
-
-        if (!otherPlayer.activeSelf)
-        { // if the other player has been killed
-            gameOver = true;
-        }
 
         if (onGround){ //if on ground count down to when they can jump and move on the ground
             canMove -= Time.deltaTime;
@@ -286,7 +282,7 @@ public class PlayerController : MonoBehaviour
     {
         int counter = 1;
         int moveNum = 0;
-        int thisDam;
+        int thisDam = 0;
         bool thisProj;
         string first, second;
         string path = "Assets/Characters/CharInfo/" + charName + ".txt";
@@ -294,7 +290,6 @@ public class PlayerController : MonoBehaviour
         StreamReader reader = new StreamReader(path);
         while (!reader.EndOfStream)
         {
-            thisDam = 0;
             thisProj = false;
             if (counter % 2 != 0)
             { //Getting Damage of move, key for Dictionaries
@@ -348,7 +343,7 @@ public class PlayerController : MonoBehaviour
         {
             if (attackType[i] == true)
             {
-                foreach (var testValue in moveContainer[attInd])
+                foreach (var testValue in moveContainer[i])
                 {
                     attackPower = testValue.Key;
                     isProj = testValue.Value;
@@ -371,6 +366,47 @@ public class PlayerController : MonoBehaviour
         health -= attackDamage;
         isHit = true;
         Debug.Log(gameObject.name + " was hit! Health:" + health);
+    }
+
+    private void roundOver()
+    {
+        roundNum = roundSc.roundNum;
+        if (!playerWon && !otherPlayer.GetComponent<PlayerController>().playerWon)
+        { //neither player has won the whole game
+            if (timerSc.toScreenInt <= 0)
+            { //Endsd the round if the timer is up
+                roundSc.roundChange();
+            }
+            if (playerWon)
+            { //if a player won the round
+                roundSc.roundChange();
+            }
+        } else
+        { // A player has won the whole game and the game should end
+            endGame();
+        }
+    }
+
+    private void playerWins()
+    { //checking who won the round
+        if (health <= 0)
+        { //if a player has been killed
+            Debug.Log(gameObject.name + " Died!");
+            gameObject.SetActive(false);
+        }
+        if (!otherPlayer.activeSelf)
+        { // if the other player has been killed
+            numWins++;
+        }
+        if (numWins == 2)
+        {
+            playerWon = true;
+        }
+    }
+
+    private void endGame()
+    {
+        Time.timeScale = 0;
     }
 
     private void normalizeTimers()

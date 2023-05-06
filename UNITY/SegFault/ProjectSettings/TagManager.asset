@@ -9,6 +9,7 @@ TagManager:
   - MoveHit
   - Timer
   - Pause
+  - Round
   layers:
   - Default
   - TransparentFX
