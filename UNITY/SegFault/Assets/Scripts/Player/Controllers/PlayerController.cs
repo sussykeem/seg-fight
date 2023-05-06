@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
 
     private GameObject [] players;
     public GameObject otherPlayer;
+
+    private GameObject gameTimer;
+    private Timer timerSc;
     
     private Rigidbody2D rb;
     private Animator anim;
@@ -52,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     //Getting Character Information
     public float health = 100.0f;
-    public Dictionary<int[], int[]>[] moveContainer;
+    public Dictionary<int, bool>[] moveContainer;
     //array index is for moveType IE. moveContainer[0] is light attack info
     //the key int array contains the damage of the move and if the move spawns a projectile or not
     //the value int array contains the damaging frames of the move
@@ -65,7 +68,7 @@ public class PlayerController : MonoBehaviour
     private float canAttack = 0.0f;
     private int frameCounter, frameEnabled, frameDisabled, attInd = 0;
     public int attackPower = 0;
-    private int[] damFrames;
+    private bool isProj = false;
 
     //Getting Hit Variables
     public bool isHit, gameOver = false;
@@ -76,7 +79,10 @@ public class PlayerController : MonoBehaviour
         rb = Character.GetComponent<Rigidbody2D>();
         anim = Character.GetComponent<Animator>();
         gcs = groundCheckObj.GetComponent<groundCheck>();
-       
+
+        gameTimer = GameObject.FindGameObjectWithTag("Timer");
+        timerSc = gameTimer.GetComponent<Timer>();
+
         damageColliders = gameObject.GetComponentsInChildren<BoxCollider2D>();
         canStopCollide = collisionTime;
 
@@ -84,10 +90,10 @@ public class PlayerController : MonoBehaviour
         charName = charName.Substring(0, charName.Length - 7);
         moveContainer = new[]
         {
-            new Dictionary<int[], int[]>(),
-            new Dictionary<int[], int[]>(),
-            new Dictionary<int[], int[]>(),
-            new Dictionary<int[], int[]>()
+            new Dictionary<int, bool>(),
+            new Dictionary<int, bool>(),
+            new Dictionary<int, bool>(),
+            new Dictionary<int, bool>()
         };
 
         ReadCharInfo();
@@ -173,6 +179,11 @@ public class PlayerController : MonoBehaviour
     {
         onGround = gcs.onGround;
 
+        if(timerSc.toScreenInt <= 0)
+        { //Ends the game if time is up
+            gameOver = true;
+        }
+
         anim.SetBool("onGround", onGround);
         if(health <= 0)
         { //if a player has been killed
@@ -187,15 +198,7 @@ public class PlayerController : MonoBehaviour
 
         if (attacked)
         {
-            frameCounter++;
-            if(frameCounter == frameEnabled) {
-                damageColliders[attInd].enabled = true;
-            } else if (frameCounter == frameDisabled)
-            {
-                damageColliders[attInd].enabled = false;
-                attacked = false;
-                frameCounter = 0;
-            }
+           
         }
 
         if (onGround){ //if on ground count down to when they can jump and move on the ground
@@ -300,7 +303,8 @@ public class PlayerController : MonoBehaviour
     {
         int counter = 1;
         int moveNum = 0;
-        int[] tempDam = new int[] { 1 };
+        int thisDam;
+        bool thisProj;
         string first, second;
         string[] secondWords, firstWords;
         string path = "Assets/Characters/CharInfo/" + charName + ".txt";
@@ -308,26 +312,21 @@ public class PlayerController : MonoBehaviour
         StreamReader reader = new StreamReader(path);
         while (!reader.EndOfStream)
         {
+            thisDam = 0;
+            thisProj = false;
             if (counter % 2 != 0)
             { //Getting Damage of move, key for Dictionaries
                 first = reader.ReadLine();
-                firstWords = first.Split(' ');
-                tempDam = new int[firstWords.Length];
-                for (int i = 0; i < firstWords.Length; i++)
-                {
-                    tempDam[i] = int.Parse(firstWords[i]);
-                }
-            }
+                thisDam = int.Parse(first);
+            } 
             else
             { //Getting the Damage frames of the move, val for Dictionaries
                 second = reader.ReadLine();
-                secondWords = second.Split(' ');
-                int [] tempFramVal = new int[secondWords.Length];
-                for (int i = 0; i < secondWords.Length; i++)
-                {
-                    tempFramVal[i] = int.Parse(secondWords[i]);
-                }
-                moveContainer[moveNum].Add(tempDam, tempFramVal);
+                if(int.Parse(second) == 1)
+                { //if there is a 1 in the text file the move is a projectile attack
+                    thisProj = true;
+                } 
+                moveContainer[moveNum].Add(thisDam, thisProj);
                 moveNum++;
             }
             counter++;
@@ -369,22 +368,8 @@ public class PlayerController : MonoBehaviour
             {
                 foreach (var testValue in moveContainer[attInd])
                 {
-                    if(testValue.Key.Length > 1)
-                    { // checks if the attack is a projectile attack
-                        projAtt = true;
-                    }
-                    attackPower = testValue.Key[0];
-                    damFrames = testValue.Value;
-                    frameEnabled = damFrames[0]*6; //Frame to enable the collider
-                    frameDisabled = (damFrames[damFrames.Length - 1] + 1)*6; //Frame to disable the collider
-                    if(frameEnabled <= 0)
-                    { // for testing on active frames that have not been set yet
-                        frameEnabled = 6;
-                    }
-                    if(frameDisabled <= 0)
-                    {
-                        frameDisabled = 12;
-                    }
+                    attackPower = testValue.Key;
+                    isProj = testValue.Value;
                 }
                 attacked = true;
                 attInd = i;

@@ -1,8 +1,8 @@
 Light Attack Damage
-Light Attack Damage Frames
+Light Attack Proj Bool
 Heavy Attack Damage
-Heavy Attack Damage Frames
+Heavy Attack Proj Bool
 Special Attack Damage
-Special Attack Damage Frames
+Special Attack Proj Bool
 Shield Break Attack Damage
-Shield Break Attack Damage Frames
+Shield Break Proj Bool
