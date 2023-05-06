@@ -8,23 +8,24 @@ public class SetVolume : MonoBehaviour
 {
     public AudioMixer mixer;
     [SerializeField] private Slider volumeSlider = null;
+    public string AudioGroup;
     
     private void Start()
     {
-        LoadVolume();
+        LoadVolume(AudioGroup);
     }
 
     public void SetVolLevel(float sliderVal) 
     {
-        mixer.SetFloat("MasterVolume", Mathf.Log10(sliderVal) * 20);
-        PlayerPrefs.SetFloat("Volume", sliderVal);
-        LoadVolume();
+        mixer.SetFloat(AudioGroup, Mathf.Log10(sliderVal) * 20);
+        PlayerPrefs.SetFloat(AudioGroup, sliderVal);
+        LoadVolume(AudioGroup);
     }
 
-    void LoadVolume()
+    void LoadVolume(string AudioGroup)
     {
-        float volumeVal = PlayerPrefs.GetFloat("Volume");
+        float volumeVal = PlayerPrefs.GetFloat(AudioGroup);
         volumeSlider.value = volumeVal;
-        AudioListener.volume = volumeVal;
+       // AudioListener.volume = volumeVal;
     }
 }
