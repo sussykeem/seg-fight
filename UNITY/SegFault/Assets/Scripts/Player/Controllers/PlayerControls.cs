@@ -150,7 +150,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c4773be7-8a3a-48fb-bc09-a30e0a32cbc0"",
-                    ""path"": ""<XInputController>/leftStick"",
+                    ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
