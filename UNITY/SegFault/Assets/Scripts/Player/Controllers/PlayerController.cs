@@ -208,9 +208,11 @@ public class PlayerController : MonoBehaviour
         if(MoveDir.y <= blockThreshold && !gameOver) //Character is blocking if they are holding down
         {
             isBlock = true;
+            anim.SetBool("block", true);
         } else
         {
             isBlock = false;
+            anim.SetBool("block", false);
         }
         if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5 && !gameOver) //Character can move if they are not blocking and its been time since the last move
         {
