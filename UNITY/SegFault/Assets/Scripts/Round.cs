@@ -11,6 +11,12 @@ public class Round : MonoBehaviour
     private GameObject player1, player2;
     private PlayerController playerController1, playerController2;
 
+    public GameObject playerManager;
+    private PlayerSpawnManageer playerManagerSc;
+
+    public GameObject timerObj;
+    private Timer timerSc;
+    private float timer = 0.0f; 
 
     private GameObject[] spawnPoints;
 
@@ -25,8 +31,35 @@ public class Round : MonoBehaviour
         playerController1 = player1.GetComponent<PlayerController>();
         playerController2 = player2.GetComponent<PlayerController>();
 
-        spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        playerManagerSc = playerManager.GetComponent<PlayerSpawnManageer>();
+
+        spawnPoints = playerManagerSc.spawnPoints;
+
+        timerSc = timerObj.GetComponent<Timer>();
     }
+
+    public void FixedUpdate()
+    {
+        timer = timerSc.getTime();
+        if (timer <= 0.0f)
+        { //Time ends, change rounds
+            roundChange();
+        }
+        else if (playerController1.numWins >= 2 || playerController2.numWins >= 2)
+        { //Either player has completely won the game
+            if(playerController1.numWins >= 2)
+            {
+                gameWon(player1);
+            } else
+            {
+                gameWon(player2);
+            }
+        }
+        else if (playerController1.playerWon || playerController2.playerWon)
+        { //A player has won the round
+            roundChange();
+        }
+}
     public void roundChange()
     {
         roundNum++;
@@ -48,7 +81,16 @@ public class Round : MonoBehaviour
         roundBox.text = roundString;
         playerController1.health = 100f;
         playerController2.health = 100f;
+        playerController1.playerWon = false;
+        playerController1.playerWon = false;
         player1.transform.position = spawnPoints[0].transform.position;
-        player2.transform.position = spawnPoints[0].transform.position;
+        player2.transform.position = spawnPoints[1].transform.position;
+        timerSc.timer = timerSc.roundTime;
+    }
+
+    public void gameWon(GameObject player)
+    {
+        Time.timeScale = 0;
+        Debug.Log(player.name);
     }
 }

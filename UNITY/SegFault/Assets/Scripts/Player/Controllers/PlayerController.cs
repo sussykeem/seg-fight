@@ -76,9 +76,6 @@ public class PlayerController : MonoBehaviour
     //Round Variables
     public bool gameOver, playerWon = false;
     public int numWins = 0;
-    private int roundNum = 1;
-    private GameObject roundObj;
-    private Round roundSc;
 
     private void Awake()
     {
@@ -88,9 +85,6 @@ public class PlayerController : MonoBehaviour
 
         gameTimer = GameObject.FindGameObjectWithTag("Timer");
         timerSc = gameTimer.GetComponent<Timer>();
-
-        roundObj = GameObject.FindGameObjectWithTag("Round");
-        roundSc = roundObj.GetComponent<Round>();
 
         canStopCollide = collisionTime;
 
@@ -164,7 +158,6 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         playerWins();
-        roundOver();
 
         onGround = gcs.onGround;
 
@@ -368,38 +361,15 @@ public class PlayerController : MonoBehaviour
         Debug.Log(gameObject.name + " was hit! Health:" + health);
     }
 
-    private void roundOver()
-    {
-        roundNum = roundSc.roundNum;
-        if (!playerWon && !otherPlayer.GetComponent<PlayerController>().playerWon)
-        { //neither player has won the whole game
-            if (timerSc.toScreenInt <= 0)
-            { //Endsd the round if the timer is up
-                roundSc.roundChange();
-            }
-            if (playerWon)
-            { //if a player won the round
-                roundSc.roundChange();
-            }
-        } else
-        { // A player has won the whole game and the game should end
-            endGame();
-        }
-    }
-
     private void playerWins()
     { //checking who won the round
         if (health <= 0)
         { //if a player has been killed
             Debug.Log(gameObject.name + " Died!");
-            gameObject.SetActive(false);
         }
-        if (!otherPlayer.activeSelf)
+        if (otherPlayer.GetComponent<PlayerController>().health <= 0)
         { // if the other player has been killed
             numWins++;
-        }
-        if (numWins == 2)
-        {
             playerWon = true;
         }
     }

@@ -5785,6 +5785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55d36cdfd68a8d4479e936aa827662b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roundTime: 90
+  timer: 0
   toScreenInt: 0
   timerBox: {fileID: 1910045480}
 --- !u!4 &1637505767
@@ -5931,7 +5933,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundBox: {fileID: 343584998}
-  roundNum: 0
+  playerManager: {fileID: 625414988}
+  timerObj: {fileID: 1637505765}
+  roundNum: 1
 --- !u!1 &1793813824
 GameObject:
   m_ObjectHideFlags: 0

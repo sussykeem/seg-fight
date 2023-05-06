@@ -6,9 +6,15 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    private float timer = 10f;
+    public float roundTime = 90.0f;
+    public float timer = 0.0f;
     public int toScreenInt = 0;
     public TextMeshProUGUI timerBox;
+
+    public void Start()
+    {
+        timer = roundTime;
+    }
 
     private void FixedUpdate()
     {
