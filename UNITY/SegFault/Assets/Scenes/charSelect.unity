@@ -721,7 +721,7 @@ GameObject:
   - component: {fileID: 606440233}
   - component: {fileID: 606440232}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Player2Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -769,8 +769,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: P2
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 53da14eb5a8186d4393ea268ef9f4295, type: 2}
+  m_sharedMaterial: {fileID: 290897420956101426, guid: 53da14eb5a8186d4393ea268ef9f4295, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1159,14 +1159,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 72670a4339ae14c0ca71a445e0c43499, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0623dc4165cdb434c8b95e40c42a9caf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1479,8 +1479,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: BACK
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 53da14eb5a8186d4393ea268ef9f4295, type: 2}
+  m_sharedMaterial: {fileID: 290897420956101426, guid: 53da14eb5a8186d4393ea268ef9f4295, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1712,7 +1712,7 @@ GameObject:
   - component: {fileID: 1725430905}
   - component: {fileID: 1725430904}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Player1Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1760,8 +1760,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: P1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 53da14eb5a8186d4393ea268ef9f4295, type: 2}
+  m_sharedMaterial: {fileID: 290897420956101426, guid: 53da14eb5a8186d4393ea268ef9f4295, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1849,7 +1849,7 @@ GameObject:
   - component: {fileID: 1739933675}
   - component: {fileID: 1739933674}
   m_Layer: 5
-  m_Name: Button
+  m_Name: BackButt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2337,8 +2337,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 53da14eb5a8186d4393ea268ef9f4295, type: 2}
+  m_sharedMaterial: {fileID: 290897420956101426, guid: 53da14eb5a8186d4393ea268ef9f4295, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
