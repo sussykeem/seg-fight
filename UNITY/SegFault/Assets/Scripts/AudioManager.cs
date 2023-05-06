@@ -39,7 +39,7 @@ public class AudioManager : MonoBehaviour
         float volume = PlayerPrefs.GetFloat("Volume");
         mixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20 );
         AudioListener.volume = volume;
-        Play("Menu Music");
+        Play(sounds[0].name);
     }
 
     public void Play(string name)
