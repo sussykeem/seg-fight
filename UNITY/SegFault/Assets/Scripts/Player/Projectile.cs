@@ -38,6 +38,6 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        transform.Translate(new Vector2(1, 0) * projSpeed * projDir * Time.deltaTime);
     }
 }
