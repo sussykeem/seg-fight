@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
             if (s.name == "Menu Music" || s.name == "Fight Music") s.source.outputAudioMixerGroup = audioMixerGroup[1];
-            else s.source.outputAudioMixerGroup = audioMixerGroup[0];
+            else s.source.outputAudioMixerGroup = audioMixerGroup[2];
 
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
@@ -42,6 +42,8 @@ public class AudioManager : MonoBehaviour
         AudioListener.volume = MasterVolume;
         float MusicVolume = PlayerPrefs.GetFloat("MusicVolume");
         mixer.SetFloat("MusicVolume", Mathf.Log10(MusicVolume) * 20);
+        float SFXVolume = PlayerPrefs.GetFloat("SFXVolume");
+        mixer.SetFloat("SFXVolume", Mathf.Log10(SFXVolume) * 20);
         Play(sounds[0].name);
     }
 
