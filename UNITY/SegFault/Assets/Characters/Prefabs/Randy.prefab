@@ -174,20 +174,21 @@ MonoBehaviour:
   canJump: 0
   groundCheckObj: {fileID: 4010665475251497979}
   isBlock: 0
-  blockThreshold: -0.5
   health: 100
-  lAtt: 0
-  hAtt: 0
-  spAtt: 0
-  shAtt: 0
+  projectiles:
+  - {fileID: 4821015225813977937, guid: 2e376d07bece3b24c8992b93c5d563c5, type: 3}
+  - {fileID: 978495421914350808, guid: e3f23105cf1e1974bbb3ad03aa12ff12, type: 3}
   attacked: 0
-  projAtt: 0
+  isProj: 0
   attackType: 00000000
   attackTime: 1
   attackPower: 0
+  attInd: 0
+  projType: 0
   isHit: 0
-  gameOver: 0
   blockPadding: 0.5
+  playerWon: 0
+  numWins: 0
 --- !u!95 &-1617692431707764418
 Animator:
   serializedVersion: 5

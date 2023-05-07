@@ -66,6 +66,8 @@ public class PlayerController : MonoBehaviour
     public GameObject [] projectiles;
     public bool attacked, isProj = false;
     public bool[] attackType = new bool[4] { false, false, false, false };
+    public float projTime = 1.0f;
+    public float canProj = 0.0f;
     public float attackTime = 1.0f;
     private float canAttack = 0.0f;
     public int attackPower, attInd, projType = 0;
@@ -175,13 +177,19 @@ public class PlayerController : MonoBehaviour
             blockStagger -= Time.deltaTime;
         }
 
+        canProj -= Time.deltaTime;
+
         if (attacked)
         { //if the player did an attack
-            if(canAttack <= 0)
+            if (canAttack <= 0)
             { //do the attack until the animation time has ran
                 anim.SetBool(attackName, false);
                 attackType[attInd] = false;
                 attacked = false;
+                if (isProj)
+                {
+                    spawnProj();
+                }
             }
         }
 
@@ -223,7 +231,7 @@ public class PlayerController : MonoBehaviour
             rotChar();
         }
 
-        if (onGround && !attacked && atPos && blockStagger <= 0)
+        if (onGround && !attacked && atPos && blockStagger <= 0 && canProj <= 0)
         { //Can attack if you are on the ground and so much time has passed since the last attack
             attack();
         }
@@ -348,7 +356,7 @@ public class PlayerController : MonoBehaviour
                 foreach (var testValue in moveContainer[i])
                 {
                     attackPower = testValue.Key;
-                    if (testValue.Key == 0)
+                    if (testValue.Value <= 0)
                     { //The move is not a projectile
                         isProj = false;
                     }
@@ -356,12 +364,12 @@ public class PlayerController : MonoBehaviour
                     { //The move is a projectile
                         isProj = true;
                         projType = testValue.Value;
+                        canProj = projTime;
                     }
                 }
                 attacked = true;
                 attackName = attackNames[i];
                 anim.SetBool(attackName, true);
-                spawnProj();
                 attackTime = anim.GetCurrentAnimatorStateInfo(0).length/2;
                 canAttack = attackTime;
             }
@@ -370,7 +378,13 @@ public class PlayerController : MonoBehaviour
 
     private void spawnProj()
     {
-        GameObject.Instantiate(projectiles[projType - 1], gameObject.transform.position, gameObject.transform.rotation);
+        var projDir = 1;
+        var spawnOffset = 1.5f;
+        if (gameObject.transform.eulerAngles.y == 180)
+        {
+            projDir = -1;
+        }
+        GameObject.Instantiate(projectiles[projType - 1], new Vector2(gameObject.transform.position.x + (spawnOffset * projDir), gameObject.transform.position.y), gameObject.transform.rotation);
     }
 
     public void OnHit(float attackDamage, int moveInd)
@@ -418,6 +432,10 @@ public class PlayerController : MonoBehaviour
         if (blockStagger < -1)
         {
             blockStagger = -1;
+        }
+        if (canProj < -1)
+        {
+            canProj = -1;
         }
     }
 

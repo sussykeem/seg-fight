@@ -10,7 +10,6 @@ public class hitCheck : MonoBehaviour
     {
         playerController = gameObject.GetComponentInParent<PlayerController>();
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "MoveHit")

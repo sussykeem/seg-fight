@@ -9,6 +9,8 @@ public class Projectile : MonoBehaviour
     private PlayerController playerController;
     public int attackPower = 0;
     public int attInd = 0;
+    public float projSpeed = 5.0f;
+    private int despawnPos = 20;
     private void Awake()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -38,6 +40,10 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.Translate(new Vector2(1, 0) * projSpeed * projDir * Time.deltaTime);
+        if(transform.position.x <= -despawnPos  || transform.position.x >= despawnPos)
+        {
+            Destroy(gameObject);
+        }
+        transform.Translate(new Vector2(1 * projSpeed * Time.deltaTime, 0));
     }
 }
