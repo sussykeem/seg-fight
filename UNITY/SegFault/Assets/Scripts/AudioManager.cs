@@ -31,6 +31,7 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+            s.source.playOnAwake = false;
             
         }
     }
@@ -44,7 +45,7 @@ public class AudioManager : MonoBehaviour
         mixer.SetFloat("MusicVolume", Mathf.Log10(MusicVolume) * 20);
         float SFXVolume = PlayerPrefs.GetFloat("SFXVolume");
         mixer.SetFloat("SFXVolume", Mathf.Log10(SFXVolume) * 20);
-        Play(sounds[0].name);
+        Play("Menu Music");
     }
 
     public void Play(string name)
