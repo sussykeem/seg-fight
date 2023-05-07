@@ -10,11 +10,16 @@ public class hitCheck : MonoBehaviour
     {
         playerController = gameObject.GetComponentInParent<PlayerController>();
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "MoveHit")
         { //The collision was with the other player's hitbox
             playerController.GetComponent<PlayerController>().OnHit(playerController.otherPlayer.GetComponent<PlayerController>().attackPower, playerController.otherPlayer.GetComponent<PlayerController>().attInd);
+        } else if (collision.gameObject.tag == "Projectile")
+        { //The collision was with a projectile
+            playerController.GetComponent<PlayerController>().OnHit(collision.gameObject.GetComponent<Projectile>().attackPower, collision.gameObject.GetComponent<Projectile>().attInd);
+            Destroy(collision.gameObject);
         }
     }
 }

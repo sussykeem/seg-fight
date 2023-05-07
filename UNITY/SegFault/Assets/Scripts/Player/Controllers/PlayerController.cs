@@ -57,17 +57,18 @@ public class PlayerController : MonoBehaviour
 
     //Getting Character Information
     public float health = 100.0f;
-    public Dictionary<int, bool>[] moveContainer;
+    public Dictionary<int, int>[] moveContainer;
     //array index is for moveType IE. moveContainer[0] is light attack info
     //the key int array contains the damage of the move and if the move spawns a projectile or not
     //the value int array contains the damaging frames of the move
 
     //Attacking Variables
+    public GameObject [] projectiles;
     public bool attacked, isProj = false;
     public bool[] attackType = new bool[4] { false, false, false, false };
     public float attackTime = 1.0f;
     private float canAttack = 0.0f;
-    public int attackPower, attInd = 0;
+    public int attackPower, attInd, projType = 0;
     private string[] attackNames = { "light", "heavy", "special", "gb" };
     private string attackName = "";
 
@@ -94,10 +95,10 @@ public class PlayerController : MonoBehaviour
         charName = charName.Substring(0, charName.Length - 7);
         moveContainer = new[]
         {
-            new Dictionary<int, bool>(),
-            new Dictionary<int, bool>(),
-            new Dictionary<int, bool>(),
-            new Dictionary<int, bool>()
+            new Dictionary<int, int>(),
+            new Dictionary<int, int>(),
+            new Dictionary<int, int>(),
+            new Dictionary<int, int>()
         };
 
         ReadCharInfo();
@@ -288,14 +289,13 @@ public class PlayerController : MonoBehaviour
         int counter = 1;
         int moveNum = 0;
         int thisDam = 0;
-        bool thisProj;
+        int thisProj = 0;
         string first, second;
         string path = "Assets/Characters/CharInfo/" + charName + ".txt";
         //Read the text from directly from the test.txt file
         StreamReader reader = new StreamReader(path);
         while (!reader.EndOfStream)
         {
-            thisProj = false;
             if (counter % 2 != 0)
             { //Getting Damage of move, key for Dictionaries
                 first = reader.ReadLine();
@@ -304,10 +304,7 @@ public class PlayerController : MonoBehaviour
             else
             { //Getting if the move is a projectile, val for Dictionaries
                 second = reader.ReadLine();
-                if(int.Parse(second) == 1)
-                { //if there is a 1 in the text file the move is a projectile attack
-                    thisProj = true;
-                } 
+                thisProj = int.Parse(second);
                 moveContainer[moveNum].Add(thisDam, thisProj);
                 moveNum++;
             }
@@ -351,15 +348,29 @@ public class PlayerController : MonoBehaviour
                 foreach (var testValue in moveContainer[i])
                 {
                     attackPower = testValue.Key;
-                    isProj = testValue.Value;
+                    if (testValue.Key == 0)
+                    { //The move is not a projectile
+                        isProj = false;
+                    }
+                    else
+                    { //The move is a projectile
+                        isProj = true;
+                        projType = testValue.Value;
+                    }
                 }
                 attacked = true;
                 attackName = attackNames[i];
                 anim.SetBool(attackName, true);
+                spawnProj();
                 attackTime = anim.GetCurrentAnimatorStateInfo(0).length/2;
                 canAttack = attackTime;
             }
         }
+    }
+
+    private void spawnProj()
+    {
+        GameObject.Instantiate(projectiles[projType - 1], gameObject.transform.position, gameObject.transform.rotation);
     }
 
     public void OnHit(float attackDamage, int moveInd)
