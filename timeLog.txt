@@ -51,6 +51,26 @@ Randy @ Home
 Turner @ Home
 	Worked on character select screen
 
+5-3-2023
+Karim @ Home: 4 Hours
+	Animation
+
+5-4-2023
+Karim @ Home: 4 Hours
+	Animation
+
+5-5-2023
+Karim @ Home: 6 Hours
+	Animation, implementing Randy
+
+5-6-2023
+Karim @ Home: 8 Hours
+	Animation, implementing Karim and Blake
+
+5-7-2023
+Karim @ Home: 6 Hours
+	Animation, implementing Turner
+
 
 
 
