@@ -1728,7 +1728,7 @@ PrefabInstance:
       objectReference: {fileID: 24100000, guid: 2711e62beba9faf41bcd13038e9bb6bd, type: 2}
     - target: {fileID: 8474567091599616298, guid: 25528ab857df13e4dbd8976203d1cb91, type: 3}
       propertyPath: sounds.Array.size
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8474567091599616298, guid: 25528ab857df13e4dbd8976203d1cb91, type: 3}
       propertyPath: sounds.Array.data[0].clip
@@ -1867,6 +1867,14 @@ PrefabInstance:
       value: Blocked
       objectReference: {fileID: 0}
     - target: {fileID: 8474567091599616298, guid: 25528ab857df13e4dbd8976203d1cb91, type: 3}
+      propertyPath: sounds.Array.data[14].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 9199f059cabef164fb59bde85aeee69b, type: 3}
+    - target: {fileID: 8474567091599616298, guid: 25528ab857df13e4dbd8976203d1cb91, type: 3}
+      propertyPath: sounds.Array.data[14].name
+      value: Death
+      objectReference: {fileID: 0}
+    - target: {fileID: 8474567091599616298, guid: 25528ab857df13e4dbd8976203d1cb91, type: 3}
       propertyPath: sounds.Array.data[1].pitch
       value: 1
       objectReference: {fileID: 0}
@@ -1923,6 +1931,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8474567091599616298, guid: 25528ab857df13e4dbd8976203d1cb91, type: 3}
+      propertyPath: sounds.Array.data[14].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8474567091599616298, guid: 25528ab857df13e4dbd8976203d1cb91, type: 3}
       propertyPath: sounds.Array.data[1].volume
       value: 1
       objectReference: {fileID: 0}
@@ -1972,6 +1984,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8474567091599616298, guid: 25528ab857df13e4dbd8976203d1cb91, type: 3}
       propertyPath: sounds.Array.data[13].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8474567091599616298, guid: 25528ab857df13e4dbd8976203d1cb91, type: 3}
+      propertyPath: sounds.Array.data[14].volume
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
