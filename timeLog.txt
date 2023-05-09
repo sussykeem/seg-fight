@@ -62,7 +62,7 @@ Randy @ Home
 4-28-2023: 3 Hours
 Randy @ Home
 	Worked on UI
-	c
+	
 4-29-2023
 Blake @ Home: 10 Hours
 	Player controller
