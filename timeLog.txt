@@ -50,7 +50,19 @@ Randy @ Home
 4-20-2023: 2 Hours
 Turner @ Home
 	Worked on character select screen
+	
+4-25-2023: 2 Hours
+Randy @ Home
+	Worked on UI
 
+4-27-2023: 3 Hours
+Randy @ Home
+	Worked on UI
+
+4-28-2023: 3 Hours
+Randy @ Home
+	Worked on UI
+	c
 4-29-2023
 Blake @ Home: 10 Hours
 	Player controller
@@ -114,7 +126,7 @@ Karim, Blake, Turner, Randy @ Discord Call: 7 Hours
 Karim: 52.4 Hours
 Blake: 94 Hours
 Turner: 
-Randy: 
+Randy: 30 Hours
 
 
 
