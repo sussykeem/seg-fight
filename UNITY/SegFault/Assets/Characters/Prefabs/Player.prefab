@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 236740259791381958}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.39, y: -1.45, z: 3}
+  m_LocalPosition: {x: -0.39, y: -1.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -386,6 +386,7 @@ MonoBehaviour:
   onGround: 0
   groundCheckObj: {fileID: 236740259791381958}
   isBlock: 0
+  ogRot: {x: 0, y: 0, z: 0, w: 0}
   health: 100
   projectiles:
   - {fileID: 4821015225813977937, guid: 2e376d07bece3b24c8992b93c5d563c5, type: 3}
@@ -397,10 +398,13 @@ MonoBehaviour:
   attackPower: 0
   attInd: 0
   projType: 0
+  attackName: 
   isHit: 0
   deathTime: 0
   playerWon: 0
   numWins: 0
+  startTimer: 1.5
+  canStart: 0
 --- !u!1 &4084830662949641834
 GameObject:
   m_ObjectHideFlags: 0

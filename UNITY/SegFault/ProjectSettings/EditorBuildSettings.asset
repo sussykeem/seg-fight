@@ -7,7 +7,10 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: 
-    guid: e74f413a05d3bd34ca02abb319396ea2
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Cutscene.unity
+    guid: fdd793185229def45a2413ae7047d4a7
   - enabled: 1
     path: Assets/Scenes/Arenas/Mountain.unity
     guid: 29176623ebd624d47bf5de5e69c8d5b7
