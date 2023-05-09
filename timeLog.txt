@@ -51,26 +51,70 @@ Randy @ Home
 Turner @ Home
 	Worked on character select screen
 
+4-29-2023
+Blake @ Home: 10 Hours
+	Player controller
+
+4-30-2023
+Blake @ Home: 11 Hours
+	Player controller, backend
+
+5-1-2023
+Blake @ Home: 10 Hours
+	Attacks
+
+5-2-2023
+Blake @ Home: 10 Hours
+	Attacks
+
 5-3-2023
 Karim @ Home: 4 Hours
 	Animation
+Blake @ Home: 8 Hours
+	Attacks
 
 5-4-2023
 Karim @ Home: 4 Hours
 	Animation
+Blake @ Home: 8 Hours
+	Backend
 
 5-5-2023
 Karim @ Home: 6 Hours
 	Animation, implementing Randy
+Turner @ Home: 4 Hours
+	Music
+Randy, Blake @ Home: 4 Hours
+	Health Bars, UI
+Randy @ Home: 2 Hours
+	Character select
 
 5-6-2023
 Karim @ Home: 8 Hours
 	Animation, implementing Karim and Blake
+Turner @ Home: 3 Hours
+	Music, sound effects
+Blake @ Home: 6 Hours
+	Backend
 
 5-7-2023
 Karim @ Home: 6 Hours
 	Animation, implementing Turner
+Turner @ Home: 4 Hours
+	Music
+Blake @ Home: 6 Hours
+	Backend, timing animations
 
+5-8-2023
+Karim, Blake, Turner @ Turner's Apartment: 3 Hours
+	Finishing up animation implementation
+Karim, Blake, Turner, Randy @ Discord Call: 7 Hours
+	Bug fixes, attempting to build game
+
+Karim: 52.4 Hours
+Blake: 94 Hours
+Turner: 
+Randy: 
 
 
 
