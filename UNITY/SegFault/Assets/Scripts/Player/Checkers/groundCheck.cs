@@ -5,7 +5,7 @@ using UnityEngine;
 public class groundCheck : MonoBehaviour
 {
     public bool onGround = true;
-    public float repelFactor = 1f;
+    public float repelFactor = 2f;
     private Rigidbody2D prb;
     private Transform ptr;
     private void OnCollisionStay2D(Collision2D collision)
@@ -19,7 +19,7 @@ public class groundCheck : MonoBehaviour
             ptr = transform.parent;
             prb = ptr.GetComponent<Rigidbody2D>();
             var repelDir = -1 * (collision.gameObject.transform.position - ptr.position).normalized.x;
-            prb.AddForce(new Vector2(repelFactor * repelDir, 1 * repelFactor), ForceMode2D.Impulse);
+            prb.AddForce(new Vector2(repelFactor * repelDir, repelFactor), ForceMode2D.Impulse);
         }
     }
 

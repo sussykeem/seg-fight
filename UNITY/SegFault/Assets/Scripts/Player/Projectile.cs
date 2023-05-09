@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
     private PlayerController playerController;
     public int attackPower = 0;
     public int attInd = 0;
-    public float projSpeed = 5.0f;
+    private float projSpeed = 15f;
     private int despawnPos = 20;
     private void Awake()
     {

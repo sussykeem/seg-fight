@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.IO;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,20 +20,20 @@ public class PlayerController : MonoBehaviour
     public Animator anim;
 
     //Horizontal Moving Variables
-    public float moveTime = 0.75f;
-    public float canMove = 0.0f;
-    public float moveDist = 3f;
-    public float dirFace = 0.0f;
-    public bool atPos = true;
-    public Vector2 MoveDir = Vector2.zero;
+    private float moveTime = 1f;
+    private float canMove = 0.0f;
+    private float moveDist = 3f;
+    private float dirFace = 0.0f;
+    private bool atPos = true;
+    private Vector2 MoveDir = Vector2.zero;
 
     //Jumping Variables
-    public float jumpForce = 28.0f;
+    private float jumpForce = 28.0f;
     public bool onGround = false;
-    public float horizontalJump = 4.5f;
-    public float vertDamper = 14.5f;
-    public float jumpTime = 0.5f;
-    public float canJump = 0.0f;
+    private float horizontalJump = 5f;
+    private float vertDamper = 16f;
+    private float jumpTime = 0.5f;
+    private float canJump = 0.0f;
     private Vector2 jumpMoveDir = Vector2.zero;
 
     public GameObject groundCheckObj;
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
     private float flipTime = 1.0f;
     private float canFlip = 0.0f;
     private float flipSwap = 1;
+    public Quaternion ogRot;
 
     //For collision detection and stuff
     private Coroutine moveCo;
@@ -67,23 +69,28 @@ public class PlayerController : MonoBehaviour
     public GameObject [] projectiles;
     public bool attacked, isProj, isBuffed = false;
     public bool[] attackType = new bool[4] { false, false, false, false };
-    public float projTime = 1.0f;
-    public float canProj = 0.0f;
-    public float attackTime = 1.0f;
+    private float projTime = 1.5f;
+    private float canProj = 0.0f;
+    private float attackTime = 1.0f;
     private float canAttack = 0.0f;
     public int attackPower, attInd, projType = 0;
     private string[] attackNames = { "light", "heavy", "special", "gb" };
-    private string attackName = "";
+    public string attackName = "";
 
     //Getting Hit Variables
     public bool isHit = false;
-    public float blockPadding = 0.5f;
-    public float hitStagger = 0.5f;
-    public float hitTimer = 0.0f;
+    private float blockPadding = 0.5f;
+    private float hitStagger = 0.5f;
+    private float hitTimer = 0.0f;
+    public float deathTime = 0.0f;
 
     //Round Variables
     public bool playerWon = false;
     public int numWins = 0;
+
+    //round time controls for player input
+    public float startTimer = 1.5f;
+    public float canStart = 0.0f;
 
     private void Awake()
     {
@@ -122,6 +129,9 @@ public class PlayerController : MonoBehaviour
             otherPlayer = players[0];
             dirFace = -1;
         }
+        GetDeathClipTime();
+        canStart = startTimer;
+        ogRot = transform.rotation;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -167,104 +177,118 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        playerWins();
-
-        onGround = gcs.onGround;
-
-        anim.SetBool("onGround", onGround);
-
-        if (onGround)
-        { //if on ground count down to when they can jump and move on the ground
-            canMove -= Time.deltaTime;
-            canJump -= Time.deltaTime;
-            canFlip -= Time.deltaTime;
-            canAttack -= Time.deltaTime;
-            blockStagger -= Time.deltaTime;
-        }
-
-        canProj -= Time.deltaTime;
-        hitTimer -= Time.deltaTime;
-
-        if (isHit && hitTimer <= 0)
+        if (canStart <= 0)
         {
-            isHit = false;
-            anim.SetBool("hit", false);
-            anim.SetBool("walkF", false);
-            anim.SetBool("walkB", false);
-            anim.SetBool(attackName, false);
-            anim.SetBool("block", false);
-            attacked = false;
-        }
+            PlayerWins();
 
-        if (attacked)
-        { //if the player did an attack
-            if (canAttack <= 0)
-            { //do the attack until the animation time has ran
-                anim.SetBool(attackName, false);
-                attackType[attInd] = false;
-                attacked = false;
-                if (attackPower == -1)
-                { //Move is a buff
-                    Debug.Log("Buffed");
-                    isBuffed = true;
-                }
-                if (isProj)
+            onGround = gcs.onGround;
+
+            anim.SetBool("onGround", onGround);
+
+            if (onGround)
+            { //if on ground count down to when they can jump and move on the ground
+                canMove -= Time.deltaTime;
+                canJump -= Time.deltaTime;
+                canFlip -= Time.deltaTime;
+                canAttack -= Time.deltaTime;
+                blockStagger -= Time.deltaTime;
+            }
+
+            canProj -= Time.deltaTime;
+            hitTimer -= Time.deltaTime;
+
+            if (isHit && hitTimer <= 0)
+            {
+                isHit = false;
+                anim.SetBool("hit", false);
+                anim.SetBool("walkF", false);
+                anim.SetBool("walkB", false);
+                if (attackName != "")
                 {
-                    spawnProj();
+                    anim.SetBool(attackName, false);
+                }
+                anim.SetBool("block", false);
+                attacked = false;
+                attackType[attInd] = false;
+            }
+
+            if (attacked)
+            { //if the player did an attack
+                if (canAttack <= 0)
+                { //do the attack until the animation time has ran
+                    anim.SetBool(attackName, false);
+                    attackType[attInd] = false;
+                    attacked = false;
+                    if (attackPower == -1)
+                    { //Move is a buff
+                        isBuffed = true;
+                    }
+                    if (isProj)
+                    {
+                        SpawnProj();
+                    }
                 }
             }
-        }
 
-        if (MoveDir.y <= blockThreshold && blockStagger <= 0 && !isHit)
-        { //Character is trying to block if they are holding down and they are not staggered from a shield break
-            isBlock = true;
-        } else
-        {
-            isBlock = false;
-        }
-
-        
-        if(!attacked && isBlock) //Character is blocking if they are holding down and are not staggered and not attacking
-        {
-            anim.SetBool("block", true);
-        } else
-        {
-            anim.SetBool("block", false);
-        }
-
-        if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5  && !attacked && blockStagger <= 0 && !isHit) //Character can move if they are not blocking and its been time since the last move
-        {
-            atPos = false;
-            if(MoveDir.x * dirFace > 0)
-            {
-                anim.SetBool("walkF", true);
-            } else
-            {
-                anim.SetBool("walkB", true);
+            if (MoveDir.y <= blockThreshold && blockStagger <= 0 && !isHit)
+            { //Character is trying to block if they are holding down and they are not staggered from a shield break
+                isBlock = true;
             }
-            HorizMove();
-            canMove = moveTime;
-        }
-        if (onGround && MoveDir.y >= 0.5 && atPos == true && canJump <= 0.0f && !attacked && blockStagger <= 0 && !isHit) //Character can jump if they are on the ground and pressing up
+            else
+            {
+                isBlock = false;
+            }
+
+
+            if (!attacked && isBlock) //Character is blocking if they are holding down and are not staggered and not attacking
+            {
+                anim.SetBool("block", true);
+            }
+            else
+            {
+                anim.SetBool("block", false);
+            }
+
+            if (canMove <= 0.0f && !isBlock && onGround == true && (MoveDir.x >= 0.5 || MoveDir.x <= -0.5) && MoveDir.y < 0.5 && !attacked && blockStagger <= 0 && !isHit && canProj <= 0) //Character can move if they are not blocking and its been time since the last move
+            {
+                atPos = false;
+                if (MoveDir.x * dirFace > 0)
+                {
+                    anim.SetBool("walkF", true);
+                }
+                else
+                {
+                    anim.SetBool("walkB", true);
+                }
+                anim.SetBool("hit", false);
+                HorizMove();
+                canMove = moveTime;
+            }
+            if (onGround && MoveDir.y >= 0.4 && atPos == true && canJump <= 0.0f && !attacked && blockStagger <= 0 && !isHit && canProj <= 0) //Character can jump if they are on the ground and pressing up
+            {
+                var curForce = jumpForce - vertDamper * MoveDir.y;
+                jumpMoveDir = MoveDir.normalized;
+                jumpMoveDir = new Vector2(jumpMoveDir.x * horizontalJump, jumpMoveDir.y * curForce);
+                rb.AddForce(jumpMoveDir, ForceMode2D.Impulse);
+                canJump = jumpTime;
+            }
+
+            if (onGround && otherPlayer.GetComponent<PlayerController>().onGround && canFlip <= 0 && blockStagger <= 0 && !isHit && canProj <= 0)
+            {
+                RotChar();
+            }
+
+            if (onGround && !attacked && atPos && blockStagger <= 0 && canProj <= 0 && !isHit && canProj <= 0)
+            { //Can attack if you are on the ground and so much time has passed since the last attack
+                Attack();
+            }
+
+            NormalizeTimers();
+        } else
         {
-            var curForce = jumpForce - vertDamper * MoveDir.y;
-            jumpMoveDir = MoveDir.normalized;
-            jumpMoveDir = new Vector2(jumpMoveDir.x * horizontalJump, jumpMoveDir.y * curForce);
-            rb.AddForce(jumpMoveDir, ForceMode2D.Impulse);
-            canJump = jumpTime;
+            canStart -= Time.deltaTime;
+            anim.SetBool("onGround", true);
         }
-
-        if (onGround && otherPlayer.GetComponent<PlayerController>().onGround && canFlip <= 0 && blockStagger <= 0 && !isHit)
-        {
-            rotChar();
-        }
-
-        if (onGround && !attacked && atPos && blockStagger <= 0 && canProj <= 0 && !isHit)
-        { //Can attack if you are on the ground and so much time has passed since the last attack
-            attack();
-        }
-
-        normalizeTimers();
     }
 
     private void HorizMove() //this moves the player horizontally using the MovePlayer coroutine, from their current position to set endPos in a setTime
@@ -351,7 +375,7 @@ public class PlayerController : MonoBehaviour
         }
         reader.Close();
     }
-    public void rotChar()
+    public void RotChar()
     { // To rotate the characters to make sure they are always facing each other
         if (flipped)
         {
@@ -380,7 +404,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void attack()
+    private void Attack()
     { // Handles figuring out what attack the player wants to do
         for (int i = 0; i < attackType.Length; i++)
         {
@@ -408,21 +432,22 @@ public class PlayerController : MonoBehaviour
                 attacked = true;
                 attackName = attackNames[i];
                 anim.SetBool(attackName, true);
-                attackTime = anim.GetCurrentAnimatorStateInfo(0).length;
+                UpdateAttackClipTime();
                 canAttack = attackTime;
             }
         }
     }
 
-    private void spawnProj()
+    private void SpawnProj()
     {
         var projDir = 1;
         var spawnOffset = 1.5f;
         if (gameObject.transform.eulerAngles.y == 180)
         {
             projDir = -1;
+            spawnOffset = 2;
         }
-        GameObject.Instantiate(projectiles[projType - 1], new Vector2(gameObject.transform.position.x + (spawnOffset * projDir), gameObject.transform.position.y), gameObject.transform.rotation);
+        GameObject.Instantiate(projectiles[projType - 1], new Vector2(gameObject.transform.position.x + (spawnOffset * projDir), gameObject.transform.position.y + 0.5f), gameObject.transform.rotation);
     }
 
     public void OnHit(float attackDamage, int moveInd)
@@ -444,7 +469,7 @@ public class PlayerController : MonoBehaviour
         hitTimer = hitStagger;
     }
 
-    private void playerWins()
+    private void PlayerWins()
     { //checking who won the round
         if (otherPlayer.GetComponent<PlayerController>().health <= 0)
         { // if the other player has been killed
@@ -453,7 +478,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void normalizeTimers()
+    public void UpdateAttackClipTime()
+    {
+        AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
+        attackTime = Array.Find(clips, element => element.name[2..] == attackName).length - .1f;
+    }
+
+    public void GetDeathClipTime()
+    {
+        AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
+        deathTime = Array.Find(clips, element => element.name[2..] == "dead").length * 1.5f;
+    }
+
+        private void NormalizeTimers()
     { //Making sure these values don't grow up to an absurd size
         if (canJump < -1)
         {

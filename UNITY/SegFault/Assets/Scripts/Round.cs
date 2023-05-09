@@ -25,6 +25,8 @@ public class Round : MonoBehaviour
     public int roundNum = 1;
     private string roundString;
 
+    private bool gameOver = false;
+
     public void Start()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -49,11 +51,11 @@ public class Round : MonoBehaviour
     public void FixedUpdate()
     {
         timer = timerSc.getTime();
-        if (timer <= 0.0f)
+        if (timer <= 0.0f && !gameOver)
         { //Time ends, change rounds
             roundChange();
         }
-        else if (playerController1.numWins >= 2 || playerController2.numWins >= 2)
+        else if ((playerController1.numWins >= 2 || playerController2.numWins >= 2) && !gameOver)
         { //Either player has completely won the game
             if(playerController1.numWins >= 2)
             {
@@ -63,7 +65,7 @@ public class Round : MonoBehaviour
                 gameWon(player2);
             }
         }
-        else if (playerController1.playerWon || playerController2.playerWon)
+        else if ((playerController1.playerWon || playerController2.playerWon) && !gameOver)
         { //A player has won the round
             roundChange();
         }
@@ -89,6 +91,8 @@ public class Round : MonoBehaviour
                 roundString = "I";
                 break;
         }
+
+        //Reset at round
         roundBox.text = roundString;
         playerController1.health = 100f;
         playerController2.health = 100f;
@@ -96,6 +100,28 @@ public class Round : MonoBehaviour
         playerController2.playerWon = false;
         player1.transform.position = spawnPoints[0].transform.position;
         player2.transform.position = spawnPoints[1].transform.position;
+        playerController1.RotChar();
+        playerController2.RotChar();
+        playerController1.canStart = playerController1.startTimer;
+        playerController2.canStart = playerController2.startTimer;
+        playerController1.anim.SetBool("hit", false);
+        playerController2.anim.SetBool("hit", false);
+        var attackName1 = playerController1.attackName;
+        var attackName2 = playerController2.attackName;
+        if(attackName1 != "")
+        {
+            playerController1.anim.SetBool(attackName1, false);
+        }
+        if(attackName2 != "")
+        {
+            playerController2.anim.SetBool(attackName2, false);
+        }
+        playerController1.anim.SetBool("block", false);
+        playerController2.anim.SetBool("block", false);
+        playerController1.anim.SetBool("walkF", false);
+        playerController1.anim.SetBool("walkB", false);
+        playerController2.anim.SetBool("walkF", false);
+        playerController2.anim.SetBool("walkB", false);
         timerSc.timer = timerSc.roundTime;
 
         AudioManager audioManager = FindObjectOfType<AudioManager>();
@@ -105,6 +131,7 @@ public class Round : MonoBehaviour
 
     public void gameWon(GameObject player)
     { //A player has won the game
+        gameOver = true;
         gameOverSc.onGameOver(player);
     }
 

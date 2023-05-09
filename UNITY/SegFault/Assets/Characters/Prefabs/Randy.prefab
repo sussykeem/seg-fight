@@ -161,9 +161,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 1350002914369462526}
   otherPlayer: {fileID: 0}
-  moveTime: 0.75
+  anim: {fileID: 0}
+  moveTime: 1
   canMove: 0
   moveDist: 3
+  dirFace: 0
   atPos: 1
   MoveDir: {x: 0, y: 0}
   jumpForce: 28
@@ -180,13 +182,19 @@ MonoBehaviour:
   - {fileID: 978495421914350808, guid: e3f23105cf1e1974bbb3ad03aa12ff12, type: 3}
   attacked: 0
   isProj: 0
+  isBuffed: 0
   attackType: 00000000
+  projTime: 1
+  canProj: 0
   attackTime: 1
   attackPower: 0
   attInd: 0
   projType: 0
   isHit: 0
   blockPadding: 0.5
+  hitStagger: 0.5
+  hitTimer: 0
+  deathTime: 0
   playerWon: 0
   numWins: 0
 --- !u!95 &-1617692431707764418

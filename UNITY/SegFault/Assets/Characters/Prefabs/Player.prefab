@@ -382,17 +382,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 2764508117882646211}
   otherPlayer: {fileID: 0}
-  moveTime: 1
-  canMove: 0
-  moveDist: 3
-  atPos: 1
-  MoveDir: {x: 0, y: 0}
-  jumpForce: 28
+  anim: {fileID: 0}
   onGround: 0
-  horizontalJump: 4.5
-  vertDamper: 14.5
-  jumpTime: 0.5
-  canJump: 0
   groundCheckObj: {fileID: 236740259791381958}
   isBlock: 0
   health: 100
@@ -401,13 +392,13 @@ MonoBehaviour:
   - {fileID: 978495421914350808, guid: e3f23105cf1e1974bbb3ad03aa12ff12, type: 3}
   attacked: 0
   isProj: 0
+  isBuffed: 0
   attackType: 00000000
-  attackTime: 1
   attackPower: 0
   attInd: 0
   projType: 0
   isHit: 0
-  blockPadding: 0.5
+  deathTime: 0
   playerWon: 0
   numWins: 0
 --- !u!1 &4084830662949641834
@@ -577,7 +568,7 @@ GameObject:
   - component: {fileID: 1256956848969871851}
   m_Layer: 0
   m_Name: HitCheck
-  m_TagString: Untagged
+  m_TagString: DamageBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
