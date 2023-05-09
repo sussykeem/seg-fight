@@ -354,7 +354,8 @@ public class PlayerController : MonoBehaviour
         int thisDam = 0;
         int thisProj = 0;
         string first, second;
-        string path = "Assets/Characters/CharInfo/" + charName + ".txt";
+        //string path = "Assets/Characters/CharInfo/" + charName + ".txt";
+        string path = "SegFight_Data/characters/" + charName + ".txt";
         //Read the text from directly from the test.txt file
         StreamReader reader = new StreamReader(path);
         while (!reader.EndOfStream)
