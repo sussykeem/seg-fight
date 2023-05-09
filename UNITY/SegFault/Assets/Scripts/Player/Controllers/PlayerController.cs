@@ -408,7 +408,7 @@ public class PlayerController : MonoBehaviour
                 attacked = true;
                 attackName = attackNames[i];
                 anim.SetBool(attackName, true);
-                attackTime = anim.GetCurrentAnimatorStateInfo(0).length/2;
+                attackTime = anim.GetCurrentAnimatorStateInfo(0).length;
                 canAttack = attackTime;
             }
         }
